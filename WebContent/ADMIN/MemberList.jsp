@@ -59,33 +59,31 @@
 			<td>UDATE</td>
 		</tr>
 			<%
-			System.out.println(count);
 			if(count > 0) {
-				for(int i =0; i<count; i++) {
-					 MemDTO board = pagedto.get(i);
+				for(int i =0; i<pagedto.size(); i++) {
 			%>
 				<tr>
 					<td><%=i+1 %></td>
 					<td>
-						<%= board.getId() %>
+						<%= pagedto.get(i).getId() %>
 					</td>
 					<td>
-						<%= board.getPasswd() %>
+						<%= pagedto.get(i).getPasswd() %>
 					</td>
 					<td>
-						<%= board.getName() %>
+						<%= pagedto.get(i).getName() %>
 					</td>
 					<td>
-						<%= board.getBirth() %>
+						<%= pagedto.get(i).getBirth() %>
 					</td>
 					<td>
-						<%= board.getPhone() %>
+						<%= pagedto.get(i).getPhone() %>
 					</td>
 					<td>
-						<%= board.getCdate() %>
+						<%= pagedto.get(i).getCdate() %>
 					</td>
 					<td>
-						<%=board.getUdate() %>
+						<%=pagedto.get(i).getUdate() %>
 					</td>
 				</tr>
 		<%
