@@ -4,6 +4,10 @@
  	if(session.getAttribute("chkMember") != null ) {
  %>
  	<jsp:forward page="/main.jsp" />
+ 	<!-- forward에서의 root는 webContent임~! 그래서 경로지정할때 주의~
+ 	한 어플리케이션내에서 경로를 지정해 줄 때 사용함.. 다른 url인 어플리케이션의 범위는 갈수없음! webcontent안쪽이 root인느낌?
+ 	그래서 main.jsp의 절대경로는 /main.jsp임 상대경로는..
+ 	memLogin이 MEMBER폴더안에 있으니까 ../main.jsp임 -->
  <%
  	}
  %>

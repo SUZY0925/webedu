@@ -187,6 +187,26 @@ public class MemberDAO {
 		return n;
 	} 
 	
+	
+	public int getCount() {
+	    int count = 0;
+	      String sql = "SELECT COUNT(*) FROM MEMBER";
+	      try {
+	         conn = DataBaseUtil.getConnection(); // 커넥션을 얻어옴
+	         pstmt = conn.prepareStatement(sql);
+	         rs = pstmt.executeQuery();
+	         if(rs.next()){
+	            count = rs.getInt(1);
+	         }
+	      } catch (SQLException e) {
+	         DataBaseUtil.printSQLException(e, this.getClass().getName() + " : public int getCount()");
+	      } finally {
+	         DataBaseUtil.close(conn, pstmt, rs);
+	      }
+	      return count; // 총 레코드 수 리턴
+	}
+	/*
+	// 총 회원 수
 	public ArrayList<MemDTO> getAll() {
 		ArrayList<MemDTO> MemberList = new ArrayList<MemDTO>();
 		MemDTO mdto = null;
@@ -212,6 +232,46 @@ public class MemberDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			DataBaseUtil.close(conn, pstmt, rs);
+		}
+		
+		return MemberList;
+	}
+	*/
+	
+	
+	public ArrayList<MemDTO> getAllPage(int startRow, int endRow) {
+		ArrayList<MemDTO> MemberList = new ArrayList<MemDTO>();
+		MemDTO mdto = null;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT * FROM (SELECT ROWNUM RN, ID, PASSWD, NAME, BIRTH, PHONE, CDATE FROM (SELECT * FROM MEMBER)) WHERE RN BETWEEN ? AND ?");
+		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rs = pstmt.executeQuery();
+			
+//			if (rs.next()) {
+				while(rs.next()) {
+					mdto = new MemDTO();
+					mdto.setId(rs.getString("id"));
+					mdto.setPasswd(rs.getString("Passwd"));
+					mdto.setName(rs.getString("Name"));
+					mdto.setBirth(rs.getString("Birth"));
+					mdto.setPhone(rs.getString("Phone"));
+					mdto.setCdate(rs.getString("cdate"));
+					mdto.setUdate(rs.getString("Udate"));
+					MemberList.add(mdto);
+				}
+			//}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DataBaseUtil.close(conn, pstmt, rs);
 		}
 		
 		return MemberList;
