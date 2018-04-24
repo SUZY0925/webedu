@@ -9,14 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
+<!--   <servlet>
   	<servlet-name>HelloServlet</servlet-name>
   	<servlet-class>com.edu.Hello</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>HelloServlet</servlet-name>
   	<url-pattern>/He2</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   
   <!-- 에러페이지 연계시키기 -->
   <error-page>
@@ -24,7 +24,18 @@
   	<location>/err/404_error.jsp</location>
   
   </error-page>
-  
+  <context-param>
+		<param-name>key_1</param-name>
+		<param-value>value_1</param-value>
+	</context-param>
+	 <context-param>
+		<param-name>key_2</param-name>
+		<param-value>value_2</param-value>
+	</context-param>
+	 <context-param>
+		<param-name>key_3</param-name>
+		<param-value>value_3</param-value>
+	</context-param>
   
   
   
