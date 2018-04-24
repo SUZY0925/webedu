@@ -245,7 +245,7 @@ public class MemberDAO {
 		ArrayList<MemDTO> MemberList = new ArrayList<MemDTO>();
 		MemDTO mdto = null;
 		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT * FROM (SELECT ROWNUM RN, ID, PASSWD, NAME, BIRTH, PHONE, CDATE FROM (SELECT * FROM MEMBER)) WHERE RN BETWEEN ? AND ?");
+		sql.append("SELECT * FROM (SELECT ROWNUM RN, ID, PASSWD, NAME, BIRTH, PHONE, CDATE, UDATE FROM (SELECT * FROM MEMBER)) WHERE RN BETWEEN ? AND ?");
 		
 		try {
 			conn = DataBaseUtil.getConnection();
@@ -259,12 +259,12 @@ public class MemberDAO {
 				while(rs.next()) {
 					mdto = new MemDTO();
 					mdto.setId(rs.getString("id"));
-					mdto.setPasswd(rs.getString("Passwd"));
-					mdto.setName(rs.getString("Name"));
-					mdto.setBirth(rs.getString("Birth"));
-					mdto.setPhone(rs.getString("Phone"));
+					mdto.setPasswd(rs.getString("passwd"));
+					mdto.setName(rs.getString("name"));
+					mdto.setBirth(rs.getString("birth"));
+					mdto.setPhone(rs.getString("phone"));
 					mdto.setCdate(rs.getString("cdate"));
-					mdto.setUdate(rs.getString("Udate"));
+					mdto.setUdate(rs.getString("udate"));
 					MemberList.add(mdto);
 				}
 			//}

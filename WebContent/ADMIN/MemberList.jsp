@@ -41,7 +41,6 @@
 		count = mdao.getCount();   // 데이터 베이스에 저장된 총 갯수
 		
 		ArrayList<MemDTO> pagedto = null;
-		
 		if(count > 0){
 		   // getList()메서드 호출 / 해당 레코드 반환
 		   pagedto = mdao.getAllPage(startRow, endRow);
@@ -59,11 +58,13 @@
 			<td>UDATE</td>
 		</tr>
 			<%
+			
 			if(count > 0) {
 				for(int i =0; i<pagedto.size(); i++) {
+					int number = i+1+(currentPage-1)*10;
 			%>
 				<tr>
-					<td><%=i+1 %></td>
+					<td><%=number %></td>
 					<td>
 						<%= pagedto.get(i).getId() %>
 					</td>
