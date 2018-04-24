@@ -22,9 +22,15 @@
 	${mdto.setBirth(birth)}
 <%
 	MemberDAO mdao = MemberDAO.getInstance();
+	SqlResult checkID = mdao.checkID(mdto.getId());
+	SqlResult insertMember = mdao.insertMember(mdto);
+	pageContext.setAttribute("set_sqlresult1", checkID);
+	pageContext.setAttribute("set_sqlresult2", insertMember);
 %>
+<C:set var="sqlresult" value="${set_sqlresult1}"/>
+<C:set var="sqlresult2" value="${set_sqlresult2}"/>
 	<C:choose>
-		<C:when test="${ mdao.checkID(mdto.getId()) == SqlResult.MEM_EXIST }">
+		<C:when test="${ sqlresult == SqlResult.MEM_EXIST }">
 			<script>
 				window.alert("이미 존재하는 아이디입니다!");
 				window.history.back(); // 이전화면
@@ -32,7 +38,7 @@
 		</C:when>
 		<C:otherwise>
 			<C:choose>
-				<C:when test="${ mdao.insertMember(mdto) == SqlResult.MEM_JOIN_SUCCESS }">
+				<C:when test="${ sqlresult2 == SqlResult.MEM_JOIN_SUCCESS }">
 					session.setAttribute("id", mdto.getId());
 					<script>
 						window.alert("회원가입이 완료되었습니다.");
@@ -48,34 +54,47 @@
 			</C:choose>
 		</C:otherwise>
 	</C:choose>
+<%-- 
+	<C:if test="${ sqlresult == SqlResult.MEM_EXIST }">
+		<script>
+			window.alert("이미 존재하는 아이디입니다!");
+			window.history.back(); // 이전화면
+		</script>
+	</C:if>
+	<C:if test="${ sqlresult2 == SqlResult.MEM_JOIN_SUCCESS }">
+			session.setAttribute("id", mdto.getId());
+				<script>
+					window.alert("회원가입이 완료되었습니다.");
+					document.location.href = "/webedu/MEMBER/memLogin.jsp";
+				</script>
+	</C:if>
+	<C:if test="${ sqlresult2 != SqlResult.MEM_JOIN_SUCCESS }">
+		<script>
+			window.alert("회원가입에 실패하였습니다.");
+			document.location.href = "/webedu/MEMBER/memLogin.jsp";
+		</script>
+	</C:if>
+ --%>
 	<%--
-<%
 	if (mdao.checkID(mdto.getId()) == SqlResult.MEM_EXIST) {
-%>
 		<script>
 		window.alert("이미 존재하는 아이디입니다!");
 		window.history.back();	// 이전화면
 		</script>
-<%
 		} else {
 			if(mdao.insertMember(mdto) == SqlResult.MEM_JOIN_SUCCESS) {
 				session.setAttribute("id", mdto.getId());	// id를 session에 담음
-%>  
 				<script>
 				window.alert("회원가입이 완료되었습니다.");
 				document.location.href="/webedu/MEMBER/memLogin.jsp";
 				</script>
-<%
 			} else {
-%>
 				<script>
 				window.alert("회원가입에 실패하였습니다.");
 				document.location.href="/webedu/MEMBER/memLogin.jsp";
 				</script>
-<%
 		};
 	}
-%>
 --%>
 </body>
 </html>
