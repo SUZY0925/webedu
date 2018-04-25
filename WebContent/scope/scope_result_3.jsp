@@ -11,6 +11,6 @@
 	<jsp:getProperty property="count" name="cnt" />
 	${cnt.count }
 	<a href="scope_test.html">test03</a>
-	<% session.invalidate(); %>
+<%-- 	<% session.invalidate(); %> --%>
 </body>
 </html>

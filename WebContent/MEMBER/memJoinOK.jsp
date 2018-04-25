@@ -16,10 +16,9 @@
 	${mdto.setBirth(birth)}
 <%
 	MemberDAO mdao = MemberDAO.getInstance();
-	SqlResult checkID = mdao.checkID(mdto.getId());
-	SqlResult insertMember = mdao.insertMember(mdto);
-	pageContext.setAttribute("set_sqlresult1", checkID);
-	pageContext.setAttribute("set_sqlresult2", insertMember);
+
+	pageContext.setAttribute("set_sqlresult1", mdao.checkID(mdto.getId()));
+	pageContext.setAttribute("set_sqlresult2", mdao.insertMember(mdto));
 %>
 <C:set var="sqlresult" value="${set_sqlresult1}"/>
 <C:set var="sqlresult2" value="${set_sqlresult2}"/>
