@@ -36,6 +36,7 @@
 			<td><a href="/webedu/MEMBER/memJoin.jsp" target="iframe_content" >회원가입</a></td>
 			<td></td>
 			<td><a href="/webedu/ADMIN/adminLogin.jsp" target="iframe_content" >관리자로그인</a></td>
+			<td><a href="/webedu/bbs/write_view.do" target="iframe_content" >게시판</a></td>
 		</tr>
 	</table>
 </nav>
