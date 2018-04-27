@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.edu.bss.cmd.BCommand;
 import com.edu.bss.cmd.BbsListCmd;
+import com.edu.bss.cmd.BbsViewCmd;
 import com.edu.bss.cmd.BbsWriteCmd;
 
 /**
@@ -77,6 +78,13 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			 viewPage = "/bbs/list.jsp"; // 게시판 목록으로 이동
 			break;
+		case "/bbs/view.do":
+			// 게시판글목록을 뿌려주는 command
+			command = new BbsViewCmd();
+			command.execute(request, response);
+			 viewPage = "/bbs/view.jsp"; // 게시판 목록으로 이동
+			break;
+
 
 		default:
 			break;

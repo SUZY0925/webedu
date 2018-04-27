@@ -11,6 +11,7 @@
 <title>게시판 쓰기 양식</title>
 </head>
 <body>
+<div class="container">
 <p class="h2" align="center">글쓰기</p>
 <table class="table">
 	<form action="write.do">
@@ -40,5 +41,6 @@
 		</tr>
 	</form>
 </table>
+</div>
 </body>
 </html>
