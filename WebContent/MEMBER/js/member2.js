@@ -1,6 +1,5 @@
 /*jQuery 이용한 유효성체크*/
 $(function() {
-	/*$("#memJoin").click(function() {*/
 	$("input[value='회원가입']").click(function() {
 		if ($("#id").val() == "") {
 			alert("아이디를 입력해주세요!");

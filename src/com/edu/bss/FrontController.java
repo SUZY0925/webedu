@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.edu.bss.cmd.BCommand;
 import com.edu.bss.cmd.BbsListCmd;
+import com.edu.bss.cmd.BbsModifyCmd;
 import com.edu.bss.cmd.BbsViewCmd;
 import com.edu.bss.cmd.BbsWriteCmd;
 
@@ -60,10 +61,11 @@ public class FrontController extends HttpServlet {
       System.out.println(cmd);
       
       switch (cmd) {
-      // 글쓰기 이동
+      	// 글쓰기 이동
 		case "/bbs/write_view.do":
 			 viewPage = "/bbs/write_form.jsp";
 			break;
+			
 		// 글쓰기 등록
 		case "/bbs/write.do":
 			// 글쓰기명령을 실제로 수행하는 command
@@ -78,11 +80,18 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			 viewPage = "/bbs/list.jsp"; // 게시판 목록으로 이동
 			break;
+			
 		case "/bbs/view.do":
-			// 게시판글목록을 뿌려주는 command
+			// 글내용 뿌려주는 command
 			command = new BbsViewCmd();
 			command.execute(request, response);
 			 viewPage = "/bbs/view.jsp"; // 게시판 목록으로 이동
+			break;
+			
+		case "/bbs/modify.do":
+			command = new BbsModifyCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/view.jsp";
 			break;
 
 

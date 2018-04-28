@@ -31,7 +31,6 @@ public class BbsDAO {
 	
 	// 글목록
 	public void write(BbsDTO bbsdto) {
-		int cnt = 0;
 		StringBuffer sql = new StringBuffer();
 		sql.append("insert into bbs (bnum, btitle, bname, bhit, bcontent) ")
 		.append("values(bbsnum_seq.nextval,?,?,?,?)");
@@ -45,10 +44,7 @@ public class BbsDAO {
 			pstmt.setInt(3, bbsdto.getbHit());
 			pstmt.setString(4, bbsdto.getbContent());
 			
-			System.out.println("title:"+bbsdto.getbTitle() + " name:"+bbsdto.getbName() +
-					" hit:"+bbsdto.getbHit() +" content:"+bbsdto.getbContent());
-			
-			cnt = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			DataBaseUtil.printSQLException(e, this.getClass().getName()+"void write(BbsDTO bbsdto)");
@@ -92,50 +88,67 @@ public class BbsDAO {
 	}
 	
 	
+	/*
+	create or replace procedure  Clist_callbbs (
+	    PNUM IN NUMBER,
+	    OTITLE out bbs.btitle%TYPE,
+	    ONAME out bbs.bname%TYPE,
+	    OUDATE out bbs.budate%TYPE,
+	    OHIT out bbs.bhit%TYPE,
+	    OCONTENT out bbs.bcontent%TYPE)
+	AS
+	    r_errcode NUMBER;
+	    r_errmsg VARCHAR(2);
+	BEGIN
+	        update BBS 
+	        SET BHIT=(BHIT+1) where BNUM = PNUM;
+	        select BTITLE, BNAME, BUDATE, BHIT, BCONTENT
+	        INTO  OTITLE, ONAME, OUDATE, OHIT, OCONTENT
+	        FROM bbs
+	        where bnum = pnum;
+	Exception 
+	    WHEN OTHERS THEN
+	    ROLLBACK;
+	    r_errcode := SQLCODE;
+	    r_errmsg := SQLERRM;
+	    DBMS_OUTPUT.PUT_LINE('ERRCODE : ' || to_char(r_errcode));
+	    DBMS_OUTPUT.PUT_LINE('ERRMSG : ' || r_errmsg);
+	END;
+	/
+*/
 	// 글내용 가져오기
 	public BbsDTO view(int bNum) {
-		BbsDTO bbsdto = new BbsDTO();;
-		String sql = "{call Clist_callbbs(?,?,?,?,?,?,?)}";
-		
+		BbsDTO bbsdto = new BbsDTO();
+		String sql = "{call Clist_callbbs(?,?,?,?,?,?)}";
+
 		try {
 			conn = DataBaseUtil.getConnection();
 			cst = conn.prepareCall(sql);
-			
+
 			cst.setInt(1, bNum);
 			cst.setString(2, "");
 			cst.setString(3, "");
 			cst.setDate(4, null);
-			cst.setDate(5, null);
-			cst.setInt(6, 0);
-			cst.setString(7, "");
-			
+			cst.setInt(5, 0);
+			cst.setString(6, "");
+
 			cst.registerOutParameter(2, java.sql.Types.VARCHAR);
-         cst.registerOutParameter(3, java.sql.Types.VARCHAR);
-         cst.registerOutParameter(4, java.sql.Types.DATE);
-         cst.registerOutParameter(5, java.sql.Types.DATE);
-         cst.registerOutParameter(6,  java.sql.Types.INTEGER);
-         cst.registerOutParameter(7, java.sql.Types.VARCHAR);
-         
+			cst.registerOutParameter(3, java.sql.Types.VARCHAR);
+			cst.registerOutParameter(4, java.sql.Types.DATE);
+			cst.registerOutParameter(5, java.sql.Types.INTEGER);
+			cst.registerOutParameter(6, java.sql.Types.VARCHAR);
+
 			cst.executeQuery();
-			
-			//out BNUM, BTITE, BNAME, BCDATE, BUDATE, BHIT, BCONTent
+
 			bbsdto.setbNum(bNum);
 			bbsdto.setbTitle(cst.getString(2));
 			bbsdto.setbName(cst.getString(3));
-			bbsdto.setbCdate(cst.getDate(4));
-			bbsdto.setbUdate(cst.getDate(5));
-			bbsdto.setbHit(cst.getInt(6));
-			bbsdto.setbContent(cst.getString(7));
-			
-			System.out.println("BTITE:"+cst.getString(2));
-			System.out.println("BNAME:"+cst.getString(3));
-			System.out.println("BCDATE:"+cst.getDate(4));
-			System.out.println("BUDATE:"+cst.getDate(5));
-			System.out.println("BHIT:"+cst.getInt(6));
-			System.out.println("BCONTent:"+cst.getString(7));
+			bbsdto.setbUdate(cst.getDate(4));
+			bbsdto.setbHit(cst.getInt(5));
+			bbsdto.setbContent(cst.getString(6));
 
 		} catch (SQLException e) {
-			DataBaseUtil.printSQLException(e, this.getClass().getName()+"BbsDTO view(int bNum)");
+			DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO view(int bNum)");
 		} finally {
 			DataBaseUtil.close(conn, pstmt);
 			if (cst != null) {
@@ -146,7 +159,49 @@ public class BbsDAO {
 				}
 			}
 		}
+		return bbsdto;
+	}
+	
+
+	public BbsDTO modify(BbsDTO bbsdto) {
+		String sql ="update bbs set bTitle=?, bName=?, bContent=?, bUdate=sysdate where bNum=?";
+		String sql2="select bTitle, bName, bUdate, bHit, bContent from bbs where bNum=?";
 		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setString(1, bbsdto.getbTitle());
+			pstmt.setString(2, bbsdto.getbName());
+			pstmt.setString(3, bbsdto.getbContent());
+			pstmt.setInt(4, bbsdto.getbNum());
+			
+			pstmt.executeUpdate();
+			
+			try {
+				pstmt = conn.prepareStatement(sql2.toString());
+				
+				pstmt.setInt(1, bbsdto.getbNum());
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					bbsdto.setbNum(bbsdto.getbNum());
+					bbsdto.setbTitle(rs.getString(1));
+					bbsdto.setbName(rs.getString(2));
+					bbsdto.setbUdate(rs.getDate(3));
+					bbsdto.setbHit(rs.getInt(4));
+					bbsdto.setbContent(rs.getString(5));
+				}
+			} catch (SQLException e) {
+				DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO modify(BbsDTO bbsdto) Select");
+				DataBaseUtil.close(conn, pstmt,rs);
+			}
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO modify(BbsDTO bbsdto) Update");
+		}  finally {
+			DataBaseUtil.close(conn, pstmt,rs);
+		}
+
 		return bbsdto;
 	}
 }

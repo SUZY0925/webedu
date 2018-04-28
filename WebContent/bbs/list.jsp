@@ -20,7 +20,7 @@
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">#</th>
-					<th scope="col">제목</th>
+					<th scope="col" width="60%">제목</th>
 					<th scope="col">작성자</th>
 					<th scope="col">작성일</th>
 					<th scope="col">조회수</th>
