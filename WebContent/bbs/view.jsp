@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/webedu/public/bootstrap/dist/cs s/bootstrap.css">
+<link rel="stylesheet" href="/webedu/public/bootstrap/dist/css/bootstrap.css">
 <script src="/public/jquery/jquery-3.3.1.js"></script>
 <script src="/webedu/public/bootstrap/dist/js/bootstrap.js"></script>
 <style id="viewStyle">
@@ -22,7 +22,9 @@
 		frm_1.bName.readOnly = false;
 		frm_1.bContent.readOnly = false;
 	}
+	
 </script>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -70,7 +72,7 @@
 			<td colspan=2 align="right">
 			<a href="list.do" class="btn btn-secondary" role="button" aria-pressed="true" >목록으로</a>
 			<a href="#" class="btn btn-secondary" role="button" aria-pressed="true" onClick="Modify()">수정하기</a>
-			<a href="delete.do?${bbsdto.bNum}" class="btn btn-secondary" role="button" aria-pressed="true">삭제하기</a>
+			<a href="delete.do?bNum=${bbsdto.bNum }" class="btn btn-secondary" role="button" aria-pressed="true">삭제하기</a>
 			</td>
 		</tr>
 		<tr id="modifyMode">
@@ -79,7 +81,15 @@
 			<a href="view.do?bNum=${bbsdto.bNum}" class="btn btn-secondary" role="button" aria-pressed="true">취소</a>
 			</td>
 		</tr>
-</form>
+				<div style="float: right">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination">
+							<li class="page-item"><a class="page-link" href="pageNav.do?bNum=${bbsdto.bNum}&np=1">Previous</a></li>
+							<li class="page-item"><a class="page-link" href="pageNav.do?bNum=${bbsdto.bNum}&np=0">Next</a></li>
+						</ul>
+					</nav>
+				</div>
+			</form>
 </table>
 </div>
 </body>

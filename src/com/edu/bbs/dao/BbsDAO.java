@@ -146,7 +146,7 @@ public class BbsDAO {
 			bbsdto.setbUdate(cst.getDate(4));
 			bbsdto.setbHit(cst.getInt(5));
 			bbsdto.setbContent(cst.getString(6));
-
+			
 		} catch (SQLException e) {
 			DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO view(int bNum)");
 		} finally {
@@ -163,6 +163,7 @@ public class BbsDAO {
 	}
 	
 
+	// 글수정하기
 	public BbsDTO modify(BbsDTO bbsdto) {
 		String sql ="update bbs set bTitle=?, bName=?, bContent=?, bUdate=sysdate where bNum=?";
 		String sql2="select bTitle, bName, bUdate, bHit, bContent from bbs where bNum=?";
@@ -202,6 +203,84 @@ public class BbsDAO {
 			DataBaseUtil.close(conn, pstmt,rs);
 		}
 
+		return bbsdto;
+	}
+	
+	//글삭제하기
+	public void delete(int bNum) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from bbs where bNum=?");
+
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+
+			pstmt.setInt(1, bNum);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName() + "void delete(int bNum)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt);
+		}
+	}
+	
+	// 다음글 이전글 이동
+	public BbsDTO pageNav(int bNum, int np) {
+		int pageNum = 0;
+		BbsDTO bbsdto = new BbsDTO();
+		String sql = "";
+
+		if (np == 1) {
+			// 이전글
+			sql = "select bNum from bbs where bNum=(select max(bNum) from bbs where bNum < ?)";
+			try {
+				conn = DataBaseUtil.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, bNum);
+
+				rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					pageNum = rs.getInt("bNum");
+					bbsdto = view(pageNum);
+					System.out.println("1");
+				} else {
+					pageNum = bNum;
+					bbsdto = view(pageNum);
+					System.out.println("2");
+				}
+				
+			} catch (SQLException e) {
+				DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO pageNav(int bNum, int np) 이전글");
+			} finally {
+				DataBaseUtil.close(conn, pstmt, rs);
+			}
+			
+		} else {
+			// 다음글
+			sql = "select bNum from bbs where bNum=(select min(bNum) from bbs where bNum > ?)";
+			try {
+				conn = DataBaseUtil.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, bNum);
+
+				rs = pstmt.executeQuery();
+
+				if (rs.next()) {
+					pageNum = rs.getInt("bNum");
+					bbsdto = view(pageNum);
+				} else {
+					pageNum = bNum;
+					bbsdto = view(pageNum);
+				}
+			} catch (SQLException e) {
+				DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO pageNav(int bNum, int np) 다음글");
+			} finally {
+				DataBaseUtil.close(conn, pstmt, rs);
+			}
+		}
+		
 		return bbsdto;
 	}
 }

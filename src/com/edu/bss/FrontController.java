@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.edu.bss.cmd.BCommand;
+import com.edu.bss.cmd.BbsDeleteCmd;
 import com.edu.bss.cmd.BbsListCmd;
 import com.edu.bss.cmd.BbsModifyCmd;
+import com.edu.bss.cmd.BbsPagenavCmd;
 import com.edu.bss.cmd.BbsViewCmd;
 import com.edu.bss.cmd.BbsWriteCmd;
 
@@ -18,6 +20,7 @@ import com.edu.bss.cmd.BbsWriteCmd;
  * Servlet implementation class FrontController
  */
 @WebServlet("*.do")
+// @WebServlet(value="*.do") , 기본엘리먼트니까 위처럼 써도 되고 ..이것도가능..
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -90,6 +93,17 @@ public class FrontController extends HttpServlet {
 			
 		case "/bbs/modify.do":
 			command = new BbsModifyCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/view.jsp";
+			break;
+			
+		case "/bbs/delete.do":
+			command = new BbsDeleteCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/list.do";
+			break;
+		case "/bbs/pageNav.do":
+			command = new BbsPagenavCmd();
 			command.execute(request, response);
 			viewPage = "/bbs/view.jsp";
 			break;
