@@ -16,7 +16,7 @@ public class BbsDAO {
 	private static BbsDAO bdao = new BbsDAO();
 	
 	CallableStatement cst;
-	Connection conn;
+	Connection conn= null;
 	Statement stmt;
 	PreparedStatement pstmt;
 	ResultSet rs;
@@ -36,6 +36,7 @@ public class BbsDAO {
 		.append("values(bbsnum_seq.nextval,?,?,?,?,bbsnum_seq.currval, 0,0)");
 		
 		try {
+			
 			conn = DataBaseUtil.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
 			
@@ -125,7 +126,7 @@ public class BbsDAO {
 		String sql = "{call Clist_callbbs(?,?,?,?,?,?)}";
 
 		try {
-			conn = DataBaseUtil.getConnection();
+				conn = DataBaseUtil.getConnection();
 			cst = conn.prepareCall(sql);
 
 			cst.setInt(1, bNum);
@@ -246,16 +247,20 @@ public class BbsDAO {
 
 				if (rs.next()) {
 					pageNum = rs.getInt("bNum");
+					
+					conn.close();
 					bbsdto = view(pageNum);
 				} else {
 					pageNum = bNum;
+					
+					conn.close();
 					bbsdto = view(pageNum);
 				}
 				
 			} catch (SQLException e) {
 				DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO pageNav(int bNum, int np) 이전글");
 			} finally {
-				DataBaseUtil.close(conn, pstmt, rs);
+				DataBaseUtil.close(pstmt, rs);
 			}
 			
 		} else {
@@ -270,9 +275,13 @@ public class BbsDAO {
 
 				if (rs.next()) {
 					pageNum = rs.getInt("bNum");
+					
+					conn.close();
 					bbsdto = view(pageNum);
 				} else {
 					pageNum = bNum;
+					
+					conn.close();
 					bbsdto = view(pageNum);
 				}
 			} catch (SQLException e) {
