@@ -29,11 +29,11 @@ public class BbsDAO {
 		return bdao;
 	}
 	
-	// 글목록
+	// 글쓰기
 	public void write(BbsDTO bbsdto) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("insert into bbs (bnum, btitle, bname, bhit, bcontent) ")
-		.append("values(bbsnum_seq.nextval,?,?,?,?)");
+		sql.append("insert into bbs (bnum, btitle, bname, bhit, bcontent, bgroup, bstep, bindent) ")
+		.append("values(bbsnum_seq.nextval,?,?,?,?,bbsnum_seq.currval, 0,0)");
 		
 		try {
 			conn = DataBaseUtil.getConnection();
@@ -58,8 +58,8 @@ public class BbsDAO {
 		ArrayList<BbsDTO> alist = new ArrayList<>();
 		BbsDTO bbsdto = new BbsDTO();
 		StringBuffer sql = new StringBuffer();
-		sql.append("select bnum, btitle, bname, bhit, bcontent, bcdate from bbs ")
-			.append("order by bnum desc");
+		sql.append("select bnum, btitle, bname, bhit, bcontent, bcdate, bgroup, bstep, bindent from bbs ")
+			.append("order by bgroup desc, bstep asc, bNum desc");
 		
 		try {
 			conn = DataBaseUtil.getConnection();
@@ -75,6 +75,9 @@ public class BbsDAO {
 					bbsdto.setbHit(rs.getInt("bhit"));
 					bbsdto.setbContent(rs.getString("bcontent"));
 					bbsdto.setbCdate(rs.getDate("bcdate"));
+					bbsdto.setbGroup(rs.getInt("bGroup"));
+					bbsdto.setbStep(rs.getInt("bStep"));
+					bbsdto.setbIndent(rs.getInt("bIndent"));
 					alist.add(bbsdto);
 			}
 			
@@ -244,11 +247,9 @@ public class BbsDAO {
 				if (rs.next()) {
 					pageNum = rs.getInt("bNum");
 					bbsdto = view(pageNum);
-					System.out.println("1");
 				} else {
 					pageNum = bNum;
 					bbsdto = view(pageNum);
-					System.out.println("2");
 				}
 				
 			} catch (SQLException e) {
@@ -282,5 +283,65 @@ public class BbsDAO {
 		}
 		
 		return bbsdto;
+	}
+
+	//원글 가져오기
+	public BbsDTO replyView(int bNum) {
+		BbsDTO bbsdto=null;
+		String sql = "select bnum, btitle, bname, bhit,bUdate, bcontent, bgroup, bstep, bindent from bbs where bnum = ?";
+
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+
+			pstmt.setInt(1, bNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				bbsdto = new BbsDTO();
+				bbsdto.setbNum(rs.getInt("bNum"));
+				bbsdto.setbTitle(rs.getString("bTitle"));
+				bbsdto.setbName(rs.getString("bName"));
+				bbsdto.setbHit(rs.getInt("bHit"));
+				bbsdto.setbUdate(rs.getDate("bUdate"));
+				bbsdto.setbContent(rs.getString("bContent"));
+				bbsdto.setbGroup(rs.getInt("bGroup"));
+				bbsdto.setbStep(rs.getInt("bStep"));
+				bbsdto.setbIndent(rs.getInt("bindent"));
+			}
+			
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO replyView(int bNum)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt, rs);
+		}
+		return bbsdto;
+	}
+
+	// 답글 등록하기
+	public void reply(BbsDTO bbsdto) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("insert into bbs (bnum, btitle, bname, bhit, bcontent, bgroup, bstep, bindent) ")
+		.append("values(bbsnum_seq.nextval,?,?,?,?,?,?,?)");
+		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setString(1, bbsdto.getbTitle());
+			pstmt.setString(2, bbsdto.getbName());
+			pstmt.setInt(3, bbsdto.getbHit());
+			pstmt.setString(4, bbsdto.getbContent());
+			pstmt.setInt(5, bbsdto.getbGroup());
+			pstmt.setInt(6, bbsdto.getbStep()+1);
+			pstmt.setInt(7, bbsdto.getbIndent()+1);
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"void reply(BbsDTO bbsdto)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt);
+		}
 	}
 }

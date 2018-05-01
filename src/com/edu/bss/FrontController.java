@@ -13,6 +13,8 @@ import com.edu.bss.cmd.BbsDeleteCmd;
 import com.edu.bss.cmd.BbsListCmd;
 import com.edu.bss.cmd.BbsModifyCmd;
 import com.edu.bss.cmd.BbsPagenavCmd;
+import com.edu.bss.cmd.BbsReplyCmd;
+import com.edu.bss.cmd.BbsReplyViewCmd;
 import com.edu.bss.cmd.BbsViewCmd;
 import com.edu.bss.cmd.BbsWriteCmd;
 
@@ -106,6 +108,19 @@ public class FrontController extends HttpServlet {
 			command = new BbsPagenavCmd();
 			command.execute(request, response);
 			viewPage = "/bbs/view.jsp";
+			break;
+			
+			//답글작성양식으로 이동
+		case "/bbs/replyView.do":
+			command = new BbsReplyViewCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/replyForm.jsp";
+			break;
+			
+		case "/bbs/reply.do":
+			command = new BbsReplyCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/list.do";
 			break;
 
 

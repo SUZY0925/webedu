@@ -31,6 +31,7 @@
 					<tr> 
 						<th scope="row">${dto.bNum }</th>
 						<td>
+						<c:forEach begin="1" end="${dto.bIndent }">ㄴ</c:forEach>
 						<a class="text-dark" href="view.do?bNum=${dto.bNum }">${dto.bTitle }</a>
 						</td>
 						<td>${dto.bName }</td>
@@ -40,13 +41,31 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		
 		<div align="right">
 			<table>
 				<tr>
-					<td colspan="3"><a href="/webedu/bbs/write_view.do" target="iframe_content" >글쓰기</a></td>
+					<td colspan="3"><a href="/webedu/bbs/write_view.do"
+						target="iframe_content">글쓰기</a></td>
+					<td>
+						<ul class="pagination">
+							<li class="page-item"><a class="page-link" href="#"
+								aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+									<span class="sr-only">Previous</span>
+							</a></li>
+							<li class="page-item"><a class="page-link" href="#">1</a></li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item"><a class="page-link" href="#"
+								aria-label="Next"> <span aria-hidden="true">&raquo;</span> <span
+									class="sr-only">Next</span>
+							</a></li>
+						</ul>
+						</td>
 				</tr>
 			</table>
 		</div>
+
 	</div>
 </body>
 </html>

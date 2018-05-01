@@ -1,21 +1,22 @@
 package com.edu.bss.cmd;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.edu.bbs.dao.BbsDAO;
 import com.edu.bbs.dto.BbsDTO;
 
-public class BbsViewCmd implements BCommand {
+public class BbsReplyViewCmd implements BCommand {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		
-		BbsDTO bbsdto = new BbsDTO();
-		
-		bbsdto.setbNum(Integer.valueOf(request.getParameter("bNum")));
+
+		int bNum = Integer.valueOf(request.getParameter("bNum"));
 		
 		BbsDAO bbsdao = BbsDAO.getInstance();
+		BbsDTO bbsdto = bbsdao.replyView(bNum);
 		
-		bbsdto = bbsdao.view(bbsdto.getbNum());
-		request.setAttribute("bbsdto", bbsdto);
+		request.setAttribute("replyView", bbsdto);
 	}
+
 }

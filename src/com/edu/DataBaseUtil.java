@@ -32,8 +32,8 @@ public class DataBaseUtil {
 		System.out.println("데이터베이스 연결 성공");
 
 		// Connection Pool설정 : 설정하지않으면 default값으로 셋팅됨
-		dataSource.setInitialSize(5); // 최초 생성할 Connection수 : default - 0
-		dataSource.setMaxTotal(5); // 최대 생성할 Connection수 : default - 8
+		dataSource.setInitialSize(-1); // 최초 생성할 Connection수 : default - 0
+		dataSource.setMaxTotal(-1); // 최대 생성할 Connection수 : default - 8
 												// 무제한 - 음수(-1)
 		dataSource.setMaxWaitMillis(1000);// Connection 반납을 기다리는 최대시간 : default 무제한
 		dataSource.setMaxIdle(5); // 최대 대여 가능한 Connection 수 : default - 8, 음수-무제한
