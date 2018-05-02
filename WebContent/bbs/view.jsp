@@ -82,7 +82,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th class="w-25 p-3">작성일</th>
+			<th class="w-25 p-3">수정일</th>
 			<td scope="col"> 
 				<input type="text" name="bUdate" readonly="readonly" class="form-control" id="" value="${bbsdto.bUdate }" >
 			</td>
