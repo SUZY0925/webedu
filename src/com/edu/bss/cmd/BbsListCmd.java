@@ -20,7 +20,8 @@ public class BbsListCmd implements BCommand {
 		int reqPage = Integer.valueOf(request.getParameter("reqPage"));
 /*		int numPerPage = Integer.valueOf(request.getParameter("numPerPage"));*/
 		
-		PageCriteria pc = new PageCriteria();
+/*		PageCriteria pc = new PageCriteria();
+		pc.setTotalRec(totalRec);*/
 		RecordCriteria rc = new RecordCriteria(reqPage, 7);
 		ArrayList<BbsDTO> alist = bbsdao.list(rc.getStartRecord(), rc.getEndRecord());
 
