@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.edu.bbs.dao.BbsDAO;
 import com.edu.bbs.dto.BbsDTO;
+import com.edu.bss.PageCriteria;
+import com.edu.bss.RecordCriteria;
 
 public class BbsListCmd implements BCommand {
 
@@ -15,22 +17,13 @@ public class BbsListCmd implements BCommand {
 
 		BbsDAO bbsdao = BbsDAO.getInstance();
 
-		int currentPage = 0;
+		int reqPage = Integer.valueOf(request.getParameter("reqPage"));
+/*		int numPerPage = Integer.valueOf(request.getParameter("numPerPage"));*/
 		
-		try {
-			currentPage = Integer.valueOf(request.getParameter("pageNum"));
-		} catch (NumberFormatException e) {
-			currentPage = 1;
-		}
+		PageCriteria pc = new PageCriteria();
+		RecordCriteria rc = new RecordCriteria(reqPage, 7);
+		ArrayList<BbsDTO> alist = bbsdao.list(rc.getStartRecord(), rc.getEndRecord());
 
-		int startRow = (currentPage - 1) * 5  + 1; // 해당 페이지에서 시작할 레코드
-		int endRow = currentPage * 5 ; // 마지막 레코드
-		
-		ArrayList<BbsDTO> alist = bbsdao.getList(startRow, endRow);
-		int getListCount = bbsdao.getListCount();
-		
-		
-		request.setAttribute("count", getListCount);
 		request.setAttribute("list", alist);
 	}
 

@@ -23,7 +23,7 @@
 		<tr>
 			<th class="w-25 p-3">제목</th>
 			<td scope="col"> 
-				<input type="text" name="bTitle" class="form-control" id="bTitle" value="[답글] ${replyView.bTitle }" >
+				<input type="text" name="bTitle" class="form-control" id="bTitle" value="re : ${replyView.bTitle }" >
 			</td>
 		</tr>
 		<tr>

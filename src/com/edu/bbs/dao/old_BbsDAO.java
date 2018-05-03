@@ -13,8 +13,8 @@ import com.edu.DataBaseUtil;
 import com.edu.MemDTO;
 import com.edu.bbs.dto.BbsDTO;
 
-public class BbsDAO {
-	private static BbsDAO bdao = new BbsDAO();
+public class old_BbsDAO {
+	private static old_BbsDAO bdao = new old_BbsDAO();
 	
 	CallableStatement cst;
 	Connection conn;
@@ -22,11 +22,11 @@ public class BbsDAO {
 	PreparedStatement pstmt;
 	ResultSet rs;
 	
-	private BbsDAO() {
+	private old_BbsDAO() {
 		
 	}
 	
-	public static BbsDAO getInstance() {
+	public static old_BbsDAO getInstance() {
 		return bdao;
 	}
 	
@@ -54,15 +54,55 @@ public class BbsDAO {
 			DataBaseUtil.close(conn, pstmt);
 		}
 	}
+	
+	//글목록 가져오기
+	public ArrayList<BbsDTO> list() {
+		ArrayList<BbsDTO> alist = new ArrayList<>();
+		BbsDTO bbsdto = new BbsDTO();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select bnum, btitle, bname, bhit, bcontent, bcdate, bgroup, bstep, bindent from bbs ")
+			.append("order by bgroup desc, bstep asc, bNum desc, bcdate desc");
+		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+					bbsdto = new BbsDTO();
+					bbsdto.setbNum(rs.getInt("bnum"));
+					bbsdto.setbTitle(rs.getString("btitle"));
+					bbsdto.setbName(rs.getString("bname"));
+					bbsdto.setbHit(rs.getInt("bhit"));
+					bbsdto.setbContent(rs.getString("bcontent"));
+					bbsdto.setbCdate(rs.getDate("bcdate"));
+					bbsdto.setbGroup(rs.getInt("bGroup"));
+					bbsdto.setbStep(rs.getInt("bStep"));
+					bbsdto.setbIndent(rs.getInt("bIndent"));
+					alist.add(bbsdto);
+			}
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"ArrayList<BbsDTO> list()");
+		} finally {
+			DataBaseUtil.close(conn, pstmt,rs);
+		}
+		return alist;
+	}
 
-
-	public ArrayList<BbsDTO> list(int startRow, int endRow) {
+	public ArrayList<BbsDTO> getList(int startRow, int endRow) {
 		ArrayList<BbsDTO> alist = new ArrayList<>();
 		BbsDTO bbsdto;
 		StringBuffer sql = new StringBuffer();
-		sql.append("select t2.* from (select row_number() over ")
-			.append("(ORDER BY bgroup desc, bstep asc) as num, t1.* FROM bbs t1) t2 where num between ? and ?");
+		sql.append("SELECT * FROM (SELECT ROWNUM RN, bNum,bTitle,bName,bCdate,bHit FROM ")
+			.append("(SELECT * FROM bbs order by bgroup desc, bstep asc, bNum desc, bcdate desc)) WHERE RN BETWEEN ? AND ?");
+		
+/*		select t2.*
+		from (select row_number() over (ORDER BY bgroup desc, bstep asc) as num, t1.*
+		                FROM bbs t1) t2
+		where num between ? and ?*/
 
+		
 		try {
 			conn = DataBaseUtil.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
@@ -82,14 +122,12 @@ public class BbsDAO {
 				}
 				
 		} catch (SQLException e) {
-			DataBaseUtil.printSQLException(e, this.getClass().getName()+"ArrayList<BbsDTO> list()");
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"ArrayList<BbsDTO> getList()");
 		} finally {
 			DataBaseUtil.close(conn, pstmt, rs);
 		}
 		return alist;
 	}
-	
-	
 	
 	public int getListCount() {
 		int count = 0;

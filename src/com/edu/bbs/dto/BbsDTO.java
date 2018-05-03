@@ -188,6 +188,16 @@ public class BbsDTO {
 	public void setbIndent(int bIndent) {
 		this.bIndent = bIndent;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BbsDTO [bNum=" + bNum + ", bTitle=" + bTitle + ", bId=" + bId + ", bName=" + bName + ", bCdate=" + bCdate
+				+ ", bUdate=" + bUdate + ", bHit=" + bHit + ", bContent=" + bContent + ", bGroup=" + bGroup + ", bStep="
+				+ bStep + ", bIndent=" + bIndent + "]";
+	}
 	
 	
 	
