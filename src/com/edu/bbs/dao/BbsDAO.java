@@ -237,21 +237,6 @@ public class BbsDAO {
 		return bbsdto;
 	}
 	
-<<<<<<< HEAD
-/*	// 글삭제
-	public void delete(int bNum) {
-		BbsDTO bbsdto = new BbsDTO();
-		StringBuffer sql = new StringBuffer();
-		sql.append("delete from bbs where bNum=?");
-		
-		try {
-			conn = DataBaseUtil.getConnection();
-			pstmt = conn.prepareStatement(sql.toString());
-			
-			pstmt.setInt(1, bNum);
-			pstmt.executeQuery();
-			
-=======
 	//글삭제하기
 	public void delete(int bNum) {
 		StringBuffer sql = new StringBuffer();
@@ -264,17 +249,14 @@ public class BbsDAO {
 			pstmt.setInt(1, bNum);
 			
 			pstmt.executeUpdate();
->>>>>>> 189501b2d6e79d7877ba17d765528576dfe7980f
 		} catch (SQLException e) {
 			DataBaseUtil.printSQLException(e, this.getClass().getName() + "void delete(int bNum)");
 		} finally {
 			DataBaseUtil.close(conn, pstmt);
 		}
-<<<<<<< HEAD
 
-	}*/
-=======
 	}
+
 	
 	// 다음글 이전글 이동
 	public BbsDTO pageNav(int bNum, int np) {
@@ -423,5 +405,5 @@ public class BbsDAO {
 		}
 	}
 
->>>>>>> 189501b2d6e79d7877ba17d765528576dfe7980f
+
 }

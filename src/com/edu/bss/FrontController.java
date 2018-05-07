@@ -99,13 +99,6 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/bbs/view.jsp";
 			break;
-<<<<<<< HEAD
-/*		case "/bbs/delete.do":
-			command = new BbsDeleteCmd();
-			command.execute(request, response);
-			viewPage = "/bbs/list.do";
-			break;*/
-=======
 			
 		case "/bbs/delete.do":
 			command = new BbsDeleteCmd();
@@ -132,7 +125,6 @@ public class FrontController extends HttpServlet {
 			break;
 
 
->>>>>>> 189501b2d6e79d7877ba17d765528576dfe7980f
 		default:
 			break;
 		}
