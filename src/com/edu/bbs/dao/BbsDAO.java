@@ -204,4 +204,25 @@ public class BbsDAO {
 
 		return bbsdto;
 	}
+	
+/*	// 글삭제
+	public void delete(int bNum) {
+		BbsDTO bbsdto = new BbsDTO();
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from bbs where bNum=?");
+		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setInt(1, bNum);
+			pstmt.executeQuery();
+			
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName() + "void delete(int bNum)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt);
+		}
+
+	}*/
 }

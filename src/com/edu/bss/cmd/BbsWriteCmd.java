@@ -12,6 +12,7 @@ public class BbsWriteCmd implements BCommand {
 		
 		BbsDTO bbsdto = new BbsDTO();
 		
+		
 		bbsdto.setbTitle(request.getParameter("bTitle"));
 		bbsdto.setbName(request.getParameter("bName"));
 		bbsdto.setbContent(request.getParameter("bContent"));

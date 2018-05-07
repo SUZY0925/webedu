@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/webedu/public/bootstrap/dist/cs s/bootstrap.css">
+<link rel="stylesheet" href="/webedu/public/bootstrap/dist/css/bootstrap.css">
 <script src="/public/jquery/jquery-3.3.1.js"></script>
 <script src="/webedu/public/bootstrap/dist/js/bootstrap.js"></script>
 <style id="viewStyle">

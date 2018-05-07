@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.edu.bss.cmd.BCommand;
+import com.edu.bss.cmd.BbsDeleteCmd;
 import com.edu.bss.cmd.BbsListCmd;
 import com.edu.bss.cmd.BbsModifyCmd;
 import com.edu.bss.cmd.BbsViewCmd;
@@ -93,8 +94,11 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/bbs/view.jsp";
 			break;
-
-
+/*		case "/bbs/delete.do":
+			command = new BbsDeleteCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/list.do";
+			break;*/
 		default:
 			break;
 		}
