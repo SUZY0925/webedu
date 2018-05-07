@@ -1,4 +1,5 @@
 package com.edu.bss;
+
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,9 @@ import com.edu.bss.cmd.BCommand;
 import com.edu.bss.cmd.BbsDeleteCmd;
 import com.edu.bss.cmd.BbsListCmd;
 import com.edu.bss.cmd.BbsModifyCmd;
+import com.edu.bss.cmd.BbsPagenavCmd;
+import com.edu.bss.cmd.BbsReplyCmd;
+import com.edu.bss.cmd.BbsReplyViewCmd;
 import com.edu.bss.cmd.BbsViewCmd;
 import com.edu.bss.cmd.BbsWriteCmd;
 
@@ -19,6 +23,7 @@ import com.edu.bss.cmd.BbsWriteCmd;
  * Servlet implementation class FrontController
  */
 @WebServlet("*.do")
+// @WebServlet(value="*.do") , 기본엘리먼트니까 위처럼 써도 되고 ..이것도가능..
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -94,11 +99,40 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/bbs/view.jsp";
 			break;
+<<<<<<< HEAD
 /*		case "/bbs/delete.do":
 			command = new BbsDeleteCmd();
 			command.execute(request, response);
 			viewPage = "/bbs/list.do";
 			break;*/
+=======
+			
+		case "/bbs/delete.do":
+			command = new BbsDeleteCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/list.do";
+			break;
+		case "/bbs/pageNav.do":
+			command = new BbsPagenavCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/view.jsp";
+			break;
+			
+			//답글작성양식으로 이동
+		case "/bbs/replyView.do":
+			command = new BbsReplyViewCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/replyForm.jsp";
+			break;
+			
+		case "/bbs/reply.do":
+			command = new BbsReplyCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/list.do";
+			break;
+
+
+>>>>>>> 189501b2d6e79d7877ba17d765528576dfe7980f
 		default:
 			break;
 		}

@@ -12,15 +12,15 @@ public class BbsDTO {
 	private int bHit;			// 조회수
 	private String bContent;// 글내용
 	private int bGroup;		// 답글그룹
-	private String bStep;	// 답변글의 단계
-	private String bIndent;	// 답변글 들여쓰기
+	private int bStep;	// 답변글의 단계
+	private int bIndent;	// 답변글 들여쓰기
 	
 	public BbsDTO() {
 		
 	}
 	
 	public BbsDTO(int bNum, String bTitle, String bId, String bName, Date bCdate, Date bUdate, int bHit, String bContent,
-			int bGroup, String bStep, String bIndent) {
+			int bGroup, int bStep, int bIndent) {
 		super();
 		this.bNum = bNum;
 		this.bTitle = bTitle;
@@ -164,29 +164,39 @@ public class BbsDTO {
 	/**
 	 * @return the bStep
 	 */
-	public String getbStep() {
+	public int getbStep() {
 		return bStep;
 	}
 
 	/**
 	 * @param bStep the bStep to set
 	 */
-	public void setbStep(String bStep) {
+	public void setbStep(int bStep) {
 		this.bStep = bStep;
 	}
 
 	/**
 	 * @return the bIndent
 	 */
-	public String getbIndent() {
+	public int getbIndent() {
 		return bIndent;
 	}
 
 	/**
 	 * @param bIndent the bIndent to set
 	 */
-	public void setbIndent(String bIndent) {
+	public void setbIndent(int bIndent) {
 		this.bIndent = bIndent;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BbsDTO [bNum=" + bNum + ", bTitle=" + bTitle + ", bId=" + bId + ", bName=" + bName + ", bCdate=" + bCdate
+				+ ", bUdate=" + bUdate + ", bHit=" + bHit + ", bContent=" + bContent + ", bGroup=" + bGroup + ", bStep="
+				+ bStep + ", bIndent=" + bIndent + "]";
 	}
 	
 	

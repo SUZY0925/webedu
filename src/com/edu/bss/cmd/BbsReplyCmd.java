@@ -6,23 +6,23 @@ import javax.servlet.http.HttpServletResponse;
 import com.edu.bbs.dao.BbsDAO;
 import com.edu.bbs.dto.BbsDTO;
 
-public class BbsModifyCmd implements BCommand {
+public class BbsReplyCmd implements BCommand {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		BbsDTO bbsdto = new BbsDTO();
 		
 		bbsdto.setbNum(Integer.valueOf(request.getParameter("bNum")));
-		bbsdto.setbTitle(request.getParameter("bTitle"));
 		bbsdto.setbName(request.getParameter("bName"));
+		bbsdto.setbTitle(request.getParameter("bTitle"));
 		bbsdto.setbContent(request.getParameter("bContent"));
+		bbsdto.setbGroup(Integer.valueOf(request.getParameter("bGroup")));
+		bbsdto.setbStep(Integer.valueOf(request.getParameter("bStep")));
+		bbsdto.setbIndent(Integer.valueOf(request.getParameter("bIndent")));
 		
+		System.out.println();
 		BbsDAO bbsdao = BbsDAO.getInstance();
-		
-		bbsdto = bbsdao.modify(bbsdto);
-		
-		
-		request.setAttribute("bbsdto", bbsdto);
+		bbsdao.reply(bbsdto);
 	}
 
 }

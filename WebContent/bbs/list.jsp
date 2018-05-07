@@ -14,8 +14,7 @@
 </head>
 <body>
 	<div class="container">
-		<h2>Bordered Table</h2>
-		<p>The .table-bordered class adds borders to a table:</p>
+		<p class="h2" align="center">글목록</p>
 		<table class="table table-hover">
 			<thead class="thead-dark">
 				<tr>
@@ -29,10 +28,10 @@
 			<tbody>
 				<c:forEach items="${list }" var="dto">
 					<!--여기의 list는 BbsListCmd의 setAttribute에서 저장한 alist -->
-					<tr> 
+					<tr>
 						<th scope="row">${dto.bNum }</th>
-						<td>
-						<a class="text-dark" href="view.do?bNum=${dto.bNum }">${dto.bTitle }</a>
+						<td><c:forEach begin="1" end="${dto.bIndent }">ㄴ</c:forEach>
+							<a class="text-dark" href="view.do?bNum=${dto.bNum }">${dto.bTitle }</a>
 						</td>
 						<td>${dto.bName }</td>
 						<td>${dto.bCdate }</td>
@@ -41,13 +40,11 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<div align="right">
-			<table>
-				<tr>
-					<td colspan="3"><a href="/webedu/bbs/write_view.do" target="iframe_content" >글쓰기</a></td>
-				</tr>
-			</table>
-		</div>
+
+		<table>
+				<a href="/webedu/bbs/write_view.do"
+					target="iframe_content">글쓰기</a>
+		</table>
 	</div>
 </body>
 </html>
