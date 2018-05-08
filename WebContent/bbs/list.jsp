@@ -42,6 +42,7 @@
 		</table>
 
 		<table>
+			
 				<a href="/webedu/bbs/write_view.do"
 					target="iframe_content">글쓰기</a>
 		</table>
