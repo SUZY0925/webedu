@@ -23,6 +23,14 @@ public class BbsReplyCmd implements BCommand {
 		System.out.println();
 		BbsDAO bbsdao = BbsDAO.getInstance();
 		bbsdao.reply(bbsdto);
+		
+		int reqPage;
+		try {
+			reqPage = Integer.valueOf(request.getParameter("reqPage"));
+		} catch (Exception e) {
+			reqPage = 1;
+		}
+		request.setAttribute("reqPage", reqPage);
 	}
 
 }

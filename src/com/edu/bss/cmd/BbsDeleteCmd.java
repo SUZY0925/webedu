@@ -18,6 +18,14 @@ public class BbsDeleteCmd implements BCommand {
 		
 		
 		bbsdao.delete(bNum);
+		
+		int reqPage;
+		try {
+			reqPage = Integer.valueOf(request.getParameter("reqPage"));
+		} catch (Exception e) {
+			reqPage = 1;
+		}
+		request.setAttribute("reqPage", reqPage);
 	}
 
 }

@@ -112,12 +112,7 @@ public class BbsDAO {
       return count; // 총 레코드 수 리턴
 	}
 	
-	
-	
-	
-	
-	
-	
+
 	/*
 	create or replace procedure  Clist_callbbs (
 	    PNUM IN NUMBER,

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +38,8 @@
 		<tr><!-- 버튼 들어갈곳 -->
 			<td colspan=2 align="center">
 			<input class="btn btn-primary" type="button" value="등록">
-			<a href="list.do" class="btn btn-secondary" role="button" aria-pressed="true">목록으로</a>
+			<a href="list.do?reqPage=${param.reqPage }" class="btn btn-secondary" role="button" aria-pressed="true">목록으로</a>
+			<!-- frontcontroller에서 cmd를 안거치고 바로 jsp로 오기때문에 param이라는 내장객체를 이용해서 바로 request를 받을 수 있음~ el구문임ㅎ -->
 			</td>
 		</tr>
 	</form>
