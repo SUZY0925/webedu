@@ -126,7 +126,7 @@ public class FrontController extends HttpServlet {
 		case "/bbs/search.do":
 			command = new BbsSearchCmd();
 			command.execute(request, response);
-			viewPage = "/bbs/list.do";
+			viewPage = "/bbs/searchList.jsp";
 			break;
 
 		default:

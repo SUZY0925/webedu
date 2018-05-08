@@ -398,6 +398,86 @@ public class BbsDAO {
 			DataBaseUtil.close(conn, pstmt);
 		}
 	}
+	
+	
+//	public ArrayList<BbsDTO> searchList(String option, String search, int startRow, int endRow) {
+		public ArrayList<BbsDTO> searchList(String option, String search) {
+		ArrayList<BbsDTO> alist = new ArrayList<>();
+		StringBuffer sql = new StringBuffer();
+		BbsDTO bbsdto;
+		try {
+			conn = DataBaseUtil.getConnection();
+			if(option.equals("작성자")) {
+				sql.append("select * from bbs where bName like '%'||?||'%'");
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setString(1, search);
+			}  else if (option.equals("제목")) {
+				sql.append("select * from bbs where bTitle like '%'||?||'%'");
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setString(1, search);
+			} else if(option.equals("내용")) {
+				sql.append("select * from bbs where bContent like '%'||?||'%'");
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setString(1, search);
+			} else if(option.equals("제목+내용")) {
+				sql.append("select * from bbs where bTitle like '%'||?||'%' or bContent like '%'||?||'%'");
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setString(1, search);
+				pstmt.setString(2, search);
+			} else if(option.equals("제목+내용+작성자")) {
+				sql.append("select * from bbs where bTitle like '%'||?||'%' or bContent like '%'||?||'%' or bName like '%'||?||'%'");
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setString(1, search);
+				pstmt.setString(2, search);
+				pstmt.setString(3, search);
+			} else if(option.equals("작성자+내용")) {
+				sql.append("select * from bbs where bName like '%'||?||'%' or bContent like '%'||?||'%'");
+				pstmt = conn.prepareStatement(sql.toString());
+				pstmt.setString(1, search);
+				pstmt.setString(2, search);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				bbsdto = new BbsDTO();
+				bbsdto.setbNum(rs.getInt("bNum"));
+				bbsdto.setbTitle(rs.getString("bTitle"));
+				bbsdto.setbName(rs.getString("bName"));
+				bbsdto.setbCdate(rs.getDate("bCdate"));
+				bbsdto.setbHit(rs.getInt("bHit"));
+				alist.add(bbsdto);
+			}
+			
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"ArrayList<BbsDTO> searchList(String option, String search)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt, rs);
+		}
+		return alist;
+	}
+	
+/*	public int getSearchListCount(String option, String search) {
+		int count = 0;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select count(*) from bbs where bName like '%'||?||'%'"); // 우선작성자검색결과 총갯수만 얻어올수있음
+		
+		try {
+         conn = DataBaseUtil.getConnection(); // 커넥션을 얻어옴
+         pstmt = conn.prepareStatement(sql.toString());
+         pstmt.setString(1, search);
+         rs = pstmt.executeQuery();
+         
+         if(rs.next()){
+            count = rs.getInt(1);
+         }
+      } catch (SQLException e) {
+         DataBaseUtil.printSQLException(e, this.getClass().getName() + " : int getListCount()");
+      } finally {
+         DataBaseUtil.close(conn, pstmt, rs);
+      }
+      return count; // 총 레코드 수 리턴
+	}*/
 
 
 }

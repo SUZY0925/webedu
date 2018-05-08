@@ -27,7 +27,7 @@ $(function() {
 </head>
 <body>
 	<div class="container">
-		<p class="h2" align="center">글목록</p>
+		<p class="h2" align="center">검색 결과</p>
 		<table class="table table-hover">
 			<thead class="thead-dark">
 				<tr>
@@ -39,13 +39,12 @@ $(function() {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${list }" var="dto">
-					<!--여기의 list는 BbsListCmd의 setAttribute에서 저장한 alist -->
+				<c:forEach items="${searchList }" var="dto">
 					<tr>
 						<th scope="row">${dto.bNum }</th>
 						<td><c:forEach begin="1" end="${dto.bIndent }">　</c:forEach>
-						<c:if test="${dto.bIndent >0}">ㄴ</c:if> <a class="text-dark"
-							href="view.do?bNum=${dto.bNum }&reqPage=${page.recordCriteria.reqPage }">${dto.bTitle }</a></td>
+						<c:if test="${dto.bIndent >0}">ㄴ</c:if>
+						<a class="text-dark" href="view.do?bNum=${dto.bNum }&reqPage=${page.recordCriteria.reqPage }">${dto.bTitle }</a></td>
 						<td>${dto.bName }</td>
 						<td>${dto.bCdate }</td>
 						<td>${dto.bHit }</td>
@@ -55,14 +54,14 @@ $(function() {
 		</table>
 		<table width="100%">
 			<tr>
-				<td width="95%">
+			<%-- 	 <td width="95%">
 					<ul id="pageing"
 						class="pagination pagination-sm justify-content-center">
 						<c:if test="${page.prev }">
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=1">◀</a></li>
+								href="search.do?reqPage=1">◀</a></li>
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.startPage-1}" aria-label="Previous">
+								href="search.do?reqPage=${page.startPage-1}" aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span>
 							</a></li>
 						</c:if>
@@ -74,21 +73,21 @@ $(function() {
 							</c:if>
 							<c:if test="${page.recordCriteria.reqPage != PAGE }">
 								<li class="page-item"><a class="page-link"
-									href="list.do?reqPage=${PAGE }">${PAGE }</a></li>
+									href="search.do?reqPage=${PAGE }">${PAGE }</a></li>
 							</c:if>
 						</c:forEach>
 
 						<c:if test="${page.next }">
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.endPage+1 }" aria-label="Next">
+								href="search.do?reqPage=${page.endPage+1 }" aria-label="Next">
 									<span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span>
 							</a></li>
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.finalEndPage}">▶</a></li>
+								href="search.do?reqPage=${page.finalEndPage}">▶</a></li>
 						</c:if>
 					</ul>
-				</td>
-				<td><a
+				</td> --%>
+				<td align="right"><a
 					href="/webedu/bbs/write_view.do?reqPage=${page.recordCriteria.reqPage }"
 					target="iframe_content">글쓰기</a></td>
 			</tr>
