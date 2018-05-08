@@ -16,6 +16,7 @@ import com.edu.bss.cmd.BbsModifyCmd;
 import com.edu.bss.cmd.BbsPagenavCmd;
 import com.edu.bss.cmd.BbsReplyCmd;
 import com.edu.bss.cmd.BbsReplyViewCmd;
+import com.edu.bss.cmd.BbsSearchCmd;
 import com.edu.bss.cmd.BbsViewCmd;
 import com.edu.bss.cmd.BbsWriteCmd;
 
@@ -123,7 +124,11 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/bbs/list.do";
 			break;
-
+		case "/bbs/search.do":
+			command = new BbsSearchCmd();
+			command.execute(request, response);
+			viewPage = "/bbs/list.do";
+			break;
 
 		default:
 			break;

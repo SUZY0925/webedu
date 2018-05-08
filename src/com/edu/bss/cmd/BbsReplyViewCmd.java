@@ -17,6 +17,14 @@ public class BbsReplyViewCmd implements BCommand {
 		BbsDTO bbsdto = bbsdao.replyView(bNum);
 		
 		request.setAttribute("replyView", bbsdto);
+		
+		int reqPage;
+		try {
+			reqPage = Integer.valueOf(request.getParameter("reqPage"));
+		} catch (Exception e) {
+			reqPage = 1;
+		}
+		request.setAttribute("reqPage", reqPage);
 	}
 
 }

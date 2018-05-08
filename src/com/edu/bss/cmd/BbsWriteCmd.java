@@ -18,5 +18,13 @@ public class BbsWriteCmd implements BCommand {
 	
 		BbsDAO bbsdao = BbsDAO.getInstance();
 		bbsdao.write(bbsdto);
+		
+		int reqPage;
+		try {
+			reqPage = Integer.valueOf(request.getParameter("reqPage"));
+		} catch (Exception e) {
+			reqPage = 1;
+		}
+		request.setAttribute("reqPage", reqPage);
 	}
 }

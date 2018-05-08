@@ -20,6 +20,7 @@
 	<input type="hidden" name="bGroup" value="${replyView.bGroup }" />
 	<input type="hidden" name="bStep" value="${replyView.bStep }" />
 	<input type="hidden" name="bIndent" value="${replyView.bIndent }" />
+	<input type="hidden" name="reqPage" value="${reqPage }" />
 		<tr>
 			<th class="w-25 p-3">제목</th>
 			<td scope="col"> 

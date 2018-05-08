@@ -17,5 +17,13 @@ public class BbsViewCmd implements BCommand {
 		
 		bbsdto = bbsdao.view(bbsdto.getbNum());
 		request.setAttribute("bbsdto", bbsdto);
+		
+		int reqPage;
+		try {
+			reqPage = Integer.valueOf(request.getParameter("reqPage"));
+		} catch (Exception e) {
+			reqPage = 1;
+		}
+		request.setAttribute("reqPage", reqPage);
 	}
 }

@@ -17,15 +17,22 @@ public class BbsListCmd implements BCommand {
 
 		BbsDAO bbsdao = BbsDAO.getInstance();
 
-		int reqPage = Integer.valueOf(request.getParameter("reqPage"));
-/*		int numPerPage = Integer.valueOf(request.getParameter("numPerPage"));*/
+		int reqPage;
 		
-/*		PageCriteria pc = new PageCriteria();
-		pc.setTotalRec(totalRec);*/
-		RecordCriteria rc = new RecordCriteria(reqPage, 7);
+		try {
+			reqPage = Integer.valueOf(request.getParameter("reqPage"));
+		} catch (NumberFormatException e) {
+			reqPage = 1;
+		}
+	
+		RecordCriteria rc = new RecordCriteria(reqPage, 10);
 		ArrayList<BbsDTO> alist = bbsdao.list(rc.getStartRecord(), rc.getEndRecord());
-
+		
 		request.setAttribute("list", alist);
+		
+		PageCriteria pc = new PageCriteria(rc, bbsdao.getListCount());
+		
+		request.setAttribute("page", pc);
 	}
 
 }
