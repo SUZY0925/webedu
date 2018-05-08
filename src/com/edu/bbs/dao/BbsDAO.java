@@ -404,34 +404,35 @@ public class BbsDAO {
 		public ArrayList<BbsDTO> searchList(String option, String search) {
 		ArrayList<BbsDTO> alist = new ArrayList<>();
 		StringBuffer sql = new StringBuffer();
+		sql.append("select * from bbs where ");
 		BbsDTO bbsdto;
 		try {
 			conn = DataBaseUtil.getConnection();
 			if(option.equals("작성자")) {
-				sql.append("select * from bbs where bName like '%'||?||'%'");
+				sql.append("bName like '%'||?||'%'");
 				pstmt = conn.prepareStatement(sql.toString());
 				pstmt.setString(1, search);
 			}  else if (option.equals("제목")) {
-				sql.append("select * from bbs where bTitle like '%'||?||'%'");
+				sql.append("bTitle like '%'||?||'%'");
 				pstmt = conn.prepareStatement(sql.toString());
 				pstmt.setString(1, search);
 			} else if(option.equals("내용")) {
-				sql.append("select * from bbs where bContent like '%'||?||'%'");
+				sql.append("bContent like '%'||?||'%'");
 				pstmt = conn.prepareStatement(sql.toString());
 				pstmt.setString(1, search);
 			} else if(option.equals("제목+내용")) {
-				sql.append("select * from bbs where bTitle like '%'||?||'%' or bContent like '%'||?||'%'");
+				sql.append("bTitle like '%'||?||'%' or bContent like '%'||?||'%'");
 				pstmt = conn.prepareStatement(sql.toString());
 				pstmt.setString(1, search);
 				pstmt.setString(2, search);
 			} else if(option.equals("제목+내용+작성자")) {
-				sql.append("select * from bbs where bTitle like '%'||?||'%' or bContent like '%'||?||'%' or bName like '%'||?||'%'");
+				sql.append("bTitle like '%'||?||'%' or bContent like '%'||?||'%' or bName like '%'||?||'%'");
 				pstmt = conn.prepareStatement(sql.toString());
 				pstmt.setString(1, search);
 				pstmt.setString(2, search);
 				pstmt.setString(3, search);
 			} else if(option.equals("작성자+내용")) {
-				sql.append("select * from bbs where bName like '%'||?||'%' or bContent like '%'||?||'%'");
+				sql.append("bName like '%'||?||'%' or bContent like '%'||?||'%'");
 				pstmt = conn.prepareStatement(sql.toString());
 				pstmt.setString(1, search);
 				pstmt.setString(2, search);
