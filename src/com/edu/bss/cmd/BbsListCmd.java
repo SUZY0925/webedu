@@ -17,6 +17,7 @@ public class BbsListCmd implements BCommand {
 
 		BbsDAO bbsdao = BbsDAO.getInstance();
 
+<<<<<<< HEAD
 		int reqPage;
 		
 		try {
@@ -26,6 +27,17 @@ public class BbsListCmd implements BCommand {
 		}
 	
 		RecordCriteria rc = new RecordCriteria(reqPage, 10);
+=======
+		int reqPage = Integer.valueOf(request.getParameter("reqPage"));
+<<<<<<< HEAD
+
+=======
+/*		int numPerPage = Integer.valueOf(request.getParameter("numPerPage"));*/
+		
+		PageCriteria pc = new PageCriteria();
+>>>>>>> parent of 189501b... 05030622
+		RecordCriteria rc = new RecordCriteria(reqPage, 7);
+>>>>>>> 5d629b90d2b7a9ddce1279bc288c99878147cdcc
 		ArrayList<BbsDTO> alist = bbsdao.list(rc.getStartRecord(), rc.getEndRecord());
 		
 		request.setAttribute("list", alist);

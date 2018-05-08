@@ -1,5 +1,7 @@
 package com.edu.bss.cmd;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,10 +12,11 @@ public class BbsDeleteCmd implements BCommand {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
+		BbsDAO bbsdao = BbsDAO.getInstance();
 		
 		int bNum = Integer.valueOf(request.getParameter("bNum"));
 		
-		BbsDAO bbsdao = BbsDAO.getInstance();
+		
 		bbsdao.delete(bNum);
 		
 		int reqPage;

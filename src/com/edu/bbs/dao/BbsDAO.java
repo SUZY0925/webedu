@@ -78,7 +78,6 @@ public class BbsDAO {
 					bbsdto.setbName(rs.getString("bName"));
 					bbsdto.setbCdate(rs.getDate("bCdate"));
 					bbsdto.setbHit(rs.getInt("bHit"));
-					bbsdto.setbIndent(rs.getInt("bIndent"));
 					alist.add(bbsdto);
 				}
 				
@@ -249,7 +248,9 @@ public class BbsDAO {
 		} finally {
 			DataBaseUtil.close(conn, pstmt);
 		}
+
 	}
+
 	
 	// 다음글 이전글 이동
 	public BbsDTO pageNav(int bNum, int np) {
@@ -397,5 +398,6 @@ public class BbsDAO {
 			DataBaseUtil.close(conn, pstmt);
 		}
 	}
+
 
 }

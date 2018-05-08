@@ -7,7 +7,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/webedu/public/bootstrap/dist/css/bootstrap.css">
+<<<<<<< HEAD
+<script src="/public/jquery/jquery-3.3.1.js"></script>
+=======
 <script src="/webedu/public/jquery/jquery-3.3.1.js"></script>
+>>>>>>> 189501b2d6e79d7877ba17d765528576dfe7980f
 <script src="/webedu/public/bootstrap/dist/js/bootstrap.js"></script>
 <!-- <style id="viewStyle">
 	#modifyMode{
