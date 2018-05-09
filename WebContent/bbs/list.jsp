@@ -18,7 +18,7 @@ $(function() {
 			$("input[name=search]").focus();
 			return false;
 		}
-		location.href = "search.do?option=" + $("[name=option]").val() +"&search="+$("[name=search]").val() ;
+		 location.href = "search.do?option=" + $("[name=option]").val() +"&search="+$("[name=search]").val() ; 
 	});	
 });
 </script>
@@ -99,8 +99,6 @@ $(function() {
 						<option>제목</option>
 						<option>내용</option>
 						<option>제목+내용</option>
-						<option>제목+내용+작성자</option>
-						<option>작성자+내용</option>
 					</select>
 				<input type="text" name="search" id="" class="form-control-sm"/>
 				<input type="button" class="btn-sm btn-secondary" id="searchBtn" value="검색" />

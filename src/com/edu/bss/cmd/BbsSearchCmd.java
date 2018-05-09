@@ -18,7 +18,7 @@ public class BbsSearchCmd implements BCommand {
 		String search = request.getParameter("search");
 		
 		BbsDAO bbsdao = BbsDAO.getInstance();
-				
+		System.out.println("......");
 //		int reqPage;
 //		
 //		try {
@@ -35,6 +35,7 @@ public class BbsSearchCmd implements BCommand {
 //		PageCriteria pc = new PageCriteria(rc, bbsdao.getSearchListCount(option,search));
 		
 		request.setAttribute("searchList", alist);
+		
 //		request.setAttribute("page", pc);
 	}
 

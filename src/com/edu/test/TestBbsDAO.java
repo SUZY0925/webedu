@@ -22,14 +22,6 @@ class TestBbsDAO {
 		}
 	}
 	*/
-	/*@Test
-	void test2() {
-		RecordCriteria rc = new RecordCriteria(5,10);
-		BbsDAO bbsdao = BbsDAO.getInstance();
-		PageCriteria pc = new PageCriteria(rc,bbsdao.getListCount());
-		
-		System.out.println(pc.toString());
-	}*/
 	
 	@Test
 	void test3() {

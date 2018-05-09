@@ -98,8 +98,6 @@ $(function() {
 						<option>제목</option>
 						<option>내용</option>
 						<option>제목+내용</option>
-						<option>제목+내용+작성자</option>
-						<option>작성자+내용</option>
 					</select>
 				<input type="text" name="search" id="" class="form-control-sm"/>
 				<input type="button" class="btn-sm btn-secondary" id="searchBtn" value="검색" />

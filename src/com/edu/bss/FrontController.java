@@ -123,6 +123,7 @@ public class FrontController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/bbs/list.do";
 			break;
+			
 		case "/bbs/search.do":
 			command = new BbsSearchCmd();
 			command.execute(request, response);

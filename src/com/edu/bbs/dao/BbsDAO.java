@@ -409,7 +409,7 @@ public class BbsDAO {
 		try {
 			conn = DataBaseUtil.getConnection();
 			if(option.equals("작성자")) {
-				sql.append("bName like '%'||?||'%'");
+				sql.append("bName like '%'||?||'%'");  
 				pstmt = conn.prepareStatement(sql.toString());
 				pstmt.setString(1, search);
 			}  else if (option.equals("제목")) {
@@ -425,18 +425,7 @@ public class BbsDAO {
 				pstmt = conn.prepareStatement(sql.toString());
 				pstmt.setString(1, search);
 				pstmt.setString(2, search);
-			} else if(option.equals("제목+내용+작성자")) {
-				sql.append("bTitle like '%'||?||'%' or bContent like '%'||?||'%' or bName like '%'||?||'%'");
-				pstmt = conn.prepareStatement(sql.toString());
-				pstmt.setString(1, search);
-				pstmt.setString(2, search);
-				pstmt.setString(3, search);
-			} else if(option.equals("작성자+내용")) {
-				sql.append("bName like '%'||?||'%' or bContent like '%'||?||'%'");
-				pstmt = conn.prepareStatement(sql.toString());
-				pstmt.setString(1, search);
-				pstmt.setString(2, search);
-			}
+			} 
 			
 			rs = pstmt.executeQuery();
 			
