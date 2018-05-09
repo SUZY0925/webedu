@@ -22,6 +22,7 @@ class TestBbsDAO {
 		}
 	}
 	*/
+<<<<<<< HEAD
 	
 	@Test
 	void test3() {
@@ -32,6 +33,15 @@ class TestBbsDAO {
 			System.out.println(bbsdto);
 		}
 		System.out.println("????");
+=======
+	@Test
+	void test2() {
+		RecordCriteria rc = new RecordCriteria(5,10);
+		BbsDAO bbsdao = BbsDAO.getInstance();
+		PageCriteria pc = new PageCriteria(rc,bbsdao.getListCount());
+		
+		System.out.println(pc.toString());
+>>>>>>> parent of e38fd8b... 1805081019
 	}
 
 }

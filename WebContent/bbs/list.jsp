@@ -18,7 +18,13 @@ $(function() {
 			$("input[name=search]").focus();
 			return false;
 		}
+<<<<<<< HEAD
 		 location.href = "search.do?option=" + $("[name=option]").val() +"&search="+$("[name=search]").val() ; 
+=======
+		
+		var inputState = $("[name=inputState]").value();
+		location.href = "search.do?inputState=" + inputState;
+>>>>>>> parent of e38fd8b... 1805081019
 	});	
 });
 </script>
@@ -53,6 +59,13 @@ $(function() {
 				</c:forEach>
 			</tbody>
 		</table>
+
+<<<<<<< HEAD
+		<table>
+			
+				<a href="/webedu/bbs/write_view.do"
+					target="iframe_content">글쓰기</a>
+=======
 		<table width="100%">
 			<tr>
 				<td width="95%">
@@ -94,7 +107,7 @@ $(function() {
 			</tr>
 			<tr>
 				<td>
-					<select name="option" class="form-control-sm">
+					<select name="inputState" class="form-control-sm">
 						<option selected>작성자</option>
 						<option>제목</option>
 						<option>내용</option>
@@ -104,6 +117,7 @@ $(function() {
 				<input type="button" class="btn-sm btn-secondary" id="searchBtn" value="검색" />
 				</td>
 			</tr>
+>>>>>>> 94f5f354da9f8b97ea3e03edfb5dc2a99e658175
 		</table>
 	</div>
 </body>

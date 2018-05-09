@@ -398,6 +398,7 @@ public class BbsDAO {
 			DataBaseUtil.close(conn, pstmt);
 		}
 	}
+<<<<<<< HEAD
 	
 	
 //	public ArrayList<BbsDTO> searchList(String option, String search, int startRow, int endRow) {
@@ -468,6 +469,8 @@ public class BbsDAO {
       }
       return count; // 총 레코드 수 리턴
 	}*/
+=======
+>>>>>>> parent of e38fd8b... 1805081019
 
 
 }

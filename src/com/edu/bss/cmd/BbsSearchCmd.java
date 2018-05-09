@@ -1,19 +1,13 @@
 package com.edu.bss.cmd;
 
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.edu.bbs.dao.BbsDAO;
-import com.edu.bbs.dto.BbsDTO;
-import com.edu.bss.PageCriteria;
-import com.edu.bss.RecordCriteria;
 
 public class BbsSearchCmd implements BCommand {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
+<<<<<<< HEAD
 		String option = request.getParameter("option");
 		String search = request.getParameter("search");
 		
@@ -37,6 +31,10 @@ public class BbsSearchCmd implements BCommand {
 		request.setAttribute("searchList", alist);
 		
 //		request.setAttribute("page", pc);
+=======
+		System.out.println(request.getParameter("inputState"));
+		System.out.println("??");
+>>>>>>> parent of e38fd8b... 1805081019
 	}
 
 }
