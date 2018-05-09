@@ -31,6 +31,7 @@ class TestBbsDAO {
 		for(BbsDTO bbsdto : alist) {
 			System.out.println(bbsdto);
 		}
+		System.out.println("????");
 	}
 
 }

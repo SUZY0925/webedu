@@ -5,3 +5,4 @@ build/classes/com/edu/Hello.class
 build/classes/com/edu/MemberDAO.class
 build/classes/com/edu/MemberDAO_Main.class
 build/classes/com/edu/MemDTO.class
+src/com/edu/test/TestBbsDAO.java
