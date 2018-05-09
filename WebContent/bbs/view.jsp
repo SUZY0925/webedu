@@ -97,7 +97,7 @@
 		</tr>
 		<tr id="viewMode">
 			<td colspan=2 align="right">
-			<a href="list.do?reqPage=${reqPage }" class="btn btn-secondary" role="button" aria-pressed="true" >목록으로</a>
+			<a href="list.do?reqPage=${reqPage }&option=${option }&search=${search }" class="btn btn-secondary" role="button" aria-pressed="true" >목록으로</a>
 			<a href="replyView.do?bNum=${bbsdto.bNum }&reqPage=${reqPage }" class="btn btn-secondary" role="button" aria-pressed="true" >답글달기</a>
 			<a href="javascript:void(0)?reqPage=${reqPage }" class="btn btn-secondary" role="button" aria-pressed="true" id="modifyBtn">수정하기</a>
 			<a href="delete.do?bNum=${bbsdto.bNum }&reqPage=${reqPage }" class="btn btn-secondary" role="button" aria-pressed="true">삭제하기</a>

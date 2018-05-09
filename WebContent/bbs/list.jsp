@@ -13,22 +13,18 @@
 <script>
 $(function() {
 	$("input[value='검색']").click(function() {
-		if ($("input[name=search]").val() == "") {
+		/* if ($("input[name=search]").val() == "") {
 			window.alert("검색할 단어를 입력해주세요!");
 			$("input[name=search]").focus();
 			return false;
 		}
-<<<<<<< HEAD
-		 location.href = "search.do?option=" + $("[name=option]").val() +"&search="+$("[name=search]").val() ; 
-=======
-		
-		var inputState = $("[name=inputState]").value();
-		location.href = "search.do?inputState=" + inputState;
->>>>>>> parent of e38fd8b... 1805081019
+		 location.href = "list.do?option=" + $("[name=option]").val() +"&search="+$("[name=search]").val() ; 
+ */	
+		self.location = "list.do?reqPage=1"
+		+"&option="+$("[name=option]").val()+"&search="+$("[name=search]").val();
 	});	
 });
 </script>
-
 <title>Insert title here</title>
 </head>
 <body>
@@ -49,7 +45,7 @@ $(function() {
 					<!--여기의 list는 BbsListCmd의 setAttribute에서 저장한 alist -->
 					<tr>
 						<th scope="row">${dto.bNum }</th>
-						<td><c:forEach begin="1" end="${dto.bIndent }">　</c:forEach>
+						<td><c:forEach begin="1" end="${dto.bIndent }">&nbsp;</c:forEach>
 						<c:if test="${dto.bIndent >0}">ㄴ</c:if> <a class="text-dark"
 							href="view.do?bNum=${dto.bNum }&reqPage=${page.recordCriteria.reqPage }">${dto.bTitle }</a></td>
 						<td>${dto.bName }</td>
@@ -60,12 +56,6 @@ $(function() {
 			</tbody>
 		</table>
 
-<<<<<<< HEAD
-		<table>
-			
-				<a href="/webedu/bbs/write_view.do"
-					target="iframe_content">글쓰기</a>
-=======
 		<table width="100%">
 			<tr>
 				<td width="95%">
@@ -73,9 +63,9 @@ $(function() {
 						class="pagination pagination-sm justify-content-center">
 						<c:if test="${page.prev }">
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=1">◀</a></li>
+								href="list.do?reqPage=1&option=${option }&search=${search }">◀</a></li>
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.startPage-1}" aria-label="Previous">
+								href="list.do?reqPage=${page.startPage-1}&option=${option }&search=${search }" aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span>
 							</a></li>
 						</c:if>
@@ -87,17 +77,17 @@ $(function() {
 							</c:if>
 							<c:if test="${page.recordCriteria.reqPage != PAGE }">
 								<li class="page-item"><a class="page-link"
-									href="list.do?reqPage=${PAGE }">${PAGE }</a></li>
+									href="list.do?reqPage=${PAGE }&option=${option }&search=${search }">${PAGE }</a></li>
 							</c:if>
 						</c:forEach>
 
 						<c:if test="${page.next }">
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.endPage+1 }" aria-label="Next">
+								href="list.do?reqPage=${page.endPage+1 }&option=${option }&search=${search }" aria-label="Next">
 									<span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span>
 							</a></li>
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.finalEndPage}">▶</a></li>
+								href="list.do?reqPage=${page.finalEndPage}&option=${option }&search=${search }">▶</a></li>
 						</c:if>
 					</ul>
 				</td>
@@ -107,18 +97,19 @@ $(function() {
 			</tr>
 			<tr>
 				<td>
-					<select name="inputState" class="form-control-sm">
-						<option selected>작성자</option>
-						<option>제목</option>
-						<option>내용</option>
-						<option>제목+내용</option>
+					<select name="option" class="form-control-sm">
+						<option <c:out value="${option == '제목 내용' ? 'selected' : ''}" />>제목+내용</option>
+						<option <c:out value="${option == '작성자' ? 'selected' : ''}" />>작성자</option>
+						<option <c:out value="${option == '제목' ? 'selected' : ''}" />>제목</option>
+						<option <c:out value="${option == '내용' ? 'selected' : ''}" />>내용</option>
 					</select>
-				<input type="text" name="search" id="" class="form-control-sm"/>
+				<input type="text" name="search" id="" class="form-control-sm" value="${search }"/>
 				<input type="button" class="btn-sm btn-secondary" id="searchBtn" value="검색" />
 				</td>
 			</tr>
->>>>>>> 94f5f354da9f8b97ea3e03edfb5dc2a99e658175
 		</table>
+
+		
 	</div>
 </body>
 </html>

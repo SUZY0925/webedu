@@ -1,5 +1,6 @@
 package com.edu.bbs.dao;
 
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -398,35 +399,50 @@ public class BbsDAO {
 			DataBaseUtil.close(conn, pstmt);
 		}
 	}
-<<<<<<< HEAD
 	
 	
-//	public ArrayList<BbsDTO> searchList(String option, String search, int startRow, int endRow) {
-		public ArrayList<BbsDTO> searchList(String option, String search) {
+ 		public ArrayList<BbsDTO> searchList(String option, String search, int startRow, int endRow) {
 		ArrayList<BbsDTO> alist = new ArrayList<>();
-		StringBuffer sql = new StringBuffer();
-		sql.append("select * from bbs where ");
 		BbsDTO bbsdto;
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("select t2.* from (select row_number() over ")
+		.append("(ORDER BY bgroup desc, bstep asc) as num, t1.* FROM bbs t1 where bnum > 0 and ");
 		try {
 			conn = DataBaseUtil.getConnection();
-			if(option.equals("작성자")) {
-				sql.append("bName like '%'||?||'%'");  
-				pstmt = conn.prepareStatement(sql.toString());
-				pstmt.setString(1, search);
-			}  else if (option.equals("제목")) {
-				sql.append("bTitle like '%'||?||'%'");
-				pstmt = conn.prepareStatement(sql.toString());
-				pstmt.setString(1, search);
-			} else if(option.equals("내용")) {
+
+			switch(option) {
+			case "내용":
 				sql.append("bContent like '%'||?||'%'");
-				pstmt = conn.prepareStatement(sql.toString());
-				pstmt.setString(1, search);
-			} else if(option.equals("제목+내용")) {
+				break;
+			case "제목":
+				sql.append("bTitle like '%'||?||'%'");
+				break;
+			case "제목 내용":
 				sql.append("bTitle like '%'||?||'%' or bContent like '%'||?||'%'");
-				pstmt = conn.prepareStatement(sql.toString());
+				break;
+			case "작성자" :
+				sql.append("bName like '%'||?||'%'");  
+				break;
+			}
+			sql.append(") t2 where num between ? and ?");
+			pstmt = conn.prepareStatement(sql.toString());
+
+			switch(option) {
+			case "내용":
+			case "제목":
+			case "작성자" :
+				pstmt.setString(1, search);
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, endRow);
+				break;
+			case "제목 내용":
 				pstmt.setString(1, search);
 				pstmt.setString(2, search);
-			} 
+				pstmt.setInt(3, startRow);
+				pstmt.setInt(4, endRow);
+				break;
+         }
 			
 			rs = pstmt.executeQuery();
 			
@@ -441,36 +457,58 @@ public class BbsDAO {
 			}
 			
 		} catch (SQLException e) {
-			DataBaseUtil.printSQLException(e, this.getClass().getName()+"ArrayList<BbsDTO> searchList(String option, String search)");
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"ArrayList<BbsDTO> searchList(String option, String search, int startRow, int endRow)");
 		} finally {
 			DataBaseUtil.close(conn, pstmt, rs);
 		}
 		return alist;
 	}
 	
-/*	public int getSearchListCount(String option, String search) {
-		int count = 0;
+	public int getSearchListCount(String option, String search) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("select count(*) from bbs where bName like '%'||?||'%'"); // 우선작성자검색결과 총갯수만 얻어올수있음
-		
+		int count = 0;
+		sql.append("select count(*) from bbs where bnum > 0 and ");
 		try {
-         conn = DataBaseUtil.getConnection(); // 커넥션을 얻어옴
-         pstmt = conn.prepareStatement(sql.toString());
-         pstmt.setString(1, search);
-         rs = pstmt.executeQuery();
-         
-         if(rs.next()){
-            count = rs.getInt(1);
+			conn = DataBaseUtil.getConnection();
+			switch(option) {
+			case "내용":
+				sql.append("bContent like '%'||?||'%'");
+				break;
+			case "제목":
+				sql.append("bTitle like '%'||?||'%'");
+				break;
+			case "제목 내용":
+				sql.append("bTitle like '%'||?||'%' or bContent like '%'||?||'%'");
+				break;
+			case "작성자" :
+				sql.append("bName like '%'||?||'%'");  
+				break;
          }
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			switch(option) {
+			case "내용":
+			case "제목":
+			case "작성자" :
+				pstmt.setString(1, search);
+				break;
+			case "제목 내용":
+				pstmt.setString(1, search);
+				pstmt.setString(2, search);
+				break;
+         }
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
       } catch (SQLException e) {
-         DataBaseUtil.printSQLException(e, this.getClass().getName() + " : int getListCount()");
+         DataBaseUtil.printSQLException(e, this.getClass().getName() + " : int getListCount(String option, String search)");
       } finally {
          DataBaseUtil.close(conn, pstmt, rs);
       }
+		
       return count; // 총 레코드 수 리턴
-	}*/
-=======
->>>>>>> parent of e38fd8b... 1805081019
-
-
+	}
 }

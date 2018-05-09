@@ -25,5 +25,11 @@ public class BbsViewCmd implements BCommand {
 			reqPage = 1;
 		}
 		request.setAttribute("reqPage", reqPage);
+		
+		String search = request.getParameter("search");
+		String option = request.getParameter("option");
+		
+		request.setAttribute("option", option);
+		request.setAttribute("search", search);
 	}
 }

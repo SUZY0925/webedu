@@ -2,7 +2,15 @@ package com.edu.bss;
 
 public class RecordCriteria {
 	private int reqPage;
-	private int numPerPage;
+	private int numPerPage = 10;
+	
+	public RecordCriteria() {
+		
+	}
+	public RecordCriteria(int reqPage) {
+		this.reqPage = reqPage;
+		this.numPerPage = 10;
+	}
 	
 	public RecordCriteria(int reqPage, int numPerPage) {
 		this.reqPage = reqPage;

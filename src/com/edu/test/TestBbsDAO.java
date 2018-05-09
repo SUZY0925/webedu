@@ -1,12 +1,8 @@
 package com.edu.test;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
 import com.edu.bbs.dao.BbsDAO;
-import com.edu.bbs.dto.BbsDTO;
-import com.edu.bss.PageCriteria;
-import com.edu.bss.RecordCriteria;
 
 class TestBbsDAO {
 
@@ -22,26 +18,31 @@ class TestBbsDAO {
 		}
 	}
 	*/
-<<<<<<< HEAD
 	
-	@Test
+/*	@Test
 	void test3() {
 		BbsDAO bbsdao = BbsDAO.getInstance();
-		ArrayList<BbsDTO> alist = bbsdao.searchList("작성자", "작성자");
+		ArrayList<BbsDTO> alist = bbsdao.searchList("작성자", "작성자",1,10);
 		System.out.println(alist.size());
 		for(BbsDTO bbsdto : alist) {
 			System.out.println(bbsdto);
 		}
-		System.out.println("????");
-=======
-	@Test
+	}
+		*/
+/*	@Test
 	void test2() {
 		RecordCriteria rc = new RecordCriteria(5,10);
 		BbsDAO bbsdao = BbsDAO.getInstance();
 		PageCriteria pc = new PageCriteria(rc,bbsdao.getListCount());
 		
 		System.out.println(pc.toString());
->>>>>>> parent of e38fd8b... 1805081019
+	}*/
+	
+	@Test
+	void test4() {
+		BbsDAO bbsdao = BbsDAO.getInstance();
+		int cnt = bbsdao.getSearchListCount("제목+내용", "re");
+		System.out.println(cnt);
 	}
 
 }
