@@ -58,7 +58,7 @@
 <p class="h2" align="center">글 내용보기</p>
 <table class="table">
 	<form name="frm_1" id="myfrm1">
-	<input type="hidden" name="reqPage" value="${reqPage }" />
+	<input type="hidden" name="reqPage" value="${rc.reqPage }" />
 		<tr>
 			<th class="w-25 p-3">제목</th>
 			<td scope="col"> 
@@ -97,16 +97,16 @@
 		</tr>
 		<tr id="viewMode">
 			<td colspan=2 align="right">
-			<a href="list.do?reqPage=${reqPage }&option=${option }&search=${search }" class="btn btn-secondary" role="button" aria-pressed="true" >목록으로</a>
-			<a href="replyView.do?bNum=${bbsdto.bNum }&reqPage=${reqPage }" class="btn btn-secondary" role="button" aria-pressed="true" >답글달기</a>
-			<a href="javascript:void(0)?reqPage=${reqPage }" class="btn btn-secondary" role="button" aria-pressed="true" id="modifyBtn">수정하기</a>
-			<a href="delete.do?bNum=${bbsdto.bNum }&reqPage=${reqPage }" class="btn btn-secondary" role="button" aria-pressed="true">삭제하기</a>
+			<a href="list.do?reqPage=${rc.reqPage }&option=${option }&search=${search }" class="btn btn-secondary" role="button" aria-pressed="true" >목록으로</a>
+			<a href="replyView.do?bNum=${bbsdto.bNum }&reqPage=${rc.reqPage }" class="btn btn-secondary" role="button" aria-pressed="true" >답글달기</a>
+			<a href="javascript:void(0)?reqPage=${rc.reqPage }" class="btn btn-secondary" role="button" aria-pressed="true" id="modifyBtn">수정하기</a>
+			<a href="delete.do?bNum=${bbsdto.bNum }&reqPage=${rc.reqPage }" class="btn btn-secondary" role="button" aria-pressed="true">삭제하기</a>
 			</td>
 		</tr>
 		<tr id="modifyMode">
 			<td colspan=2 align="right">
 			<input class="btn btn-secondary" type="submit" id="modifyOK" value="수정완료">
-			<a href="view.do?bNum=${bbsdto.bNum}&reqPage=${reqPage }" class="btn btn-secondary" role="button" aria-pressed="true">취소</a>
+			<a href="view.do?bNum=${bbsdto.bNum}&reqPage=${rc.reqPage }" class="btn btn-secondary" role="button" aria-pressed="true">취소</a>
 			</td>
 		</tr>
 				<div style="float: right">

@@ -6,10 +6,6 @@ public class FindCriteria extends RecordCriteria {
 	
 	public FindCriteria() {	//
 	}
-	
-	public FindCriteria(int reqPage) {
-		super(reqPage);
-	}
 
 	public FindCriteria(int reqPage, String option, String search) {
 		super(reqPage);
@@ -31,20 +27,6 @@ public class FindCriteria extends RecordCriteria {
 
 	public void setSearch(String search) {
 		this.search = search;
-	}
-	
-	public String getmakeURL() {
-		StringBuffer str = new StringBuffer();
-		if(super.getReqPage() != 0) {
-			str.append("reqPage="+super.getReqPage());
-		}
-		if(this.getOption() != null) {
-			str.append("&option="+this.getOption());
-		}
-		if(this.getSearch() != null) {
-			str.append("&search="+this.getSearch());
-		}
-		return str.toString();
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.edu.test;
 import org.junit.jupiter.api.Test;
 
 import com.edu.bbs.dao.BbsDAO;
+import com.edu.bbs.dao.BbsDAOimpl;
 
 class TestBbsDAO {
 
@@ -40,7 +41,7 @@ class TestBbsDAO {
 	
 	@Test
 	void test4() {
-		BbsDAO bbsdao = BbsDAO.getInstance();
+		BbsDAO bbsdao = BbsDAOimpl.getInstance();
 		int cnt = bbsdao.getSearchListCount("제목+내용", "re");
 		System.out.println(cnt);
 	}

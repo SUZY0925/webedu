@@ -47,7 +47,7 @@ $(function() {
 						<th scope="row">${dto.bNum }</th>
 						<td><c:forEach begin="1" end="${dto.bIndent }">&nbsp;</c:forEach>
 						<c:if test="${dto.bIndent >0}">ㄴ</c:if> <a class="text-dark"
-							href="view.do?bNum=${dto.bNum }&reqPage=${page.recordCriteria.reqPage }">${dto.bTitle }</a></td>
+							href="view.do?bNum=${dto.bNum }&${page.getmakeURL(page.recordCriteria.reqPage) }">${dto.bTitle }</a></td>
 						<td>${dto.bName }</td>
 						<td>${dto.bCdate }</td>
 						<td>${dto.bHit }</td>
@@ -63,9 +63,9 @@ $(function() {
 						class="pagination pagination-sm justify-content-center">
 						<c:if test="${page.prev }">
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=1&option=${option }&search=${search }">◀</a></li>
+								href="list.do?page.finalEndPage">◀</a></li>
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.startPage-1}&option=${option }&search=${search }" aria-label="Previous">
+								href="list.do?${page.getmakeURL(page.startPage-1) }" aria-label="Previous">
 									<span aria-hidden="true">&laquo;</span> <span class="sr-only">Previous</span>
 							</a></li>
 						</c:if>
@@ -77,17 +77,17 @@ $(function() {
 							</c:if>
 							<c:if test="${page.recordCriteria.reqPage != PAGE }">
 								<li class="page-item"><a class="page-link"
-									href="list.do?reqPage=${PAGE }&option=${option }&search=${search }">${PAGE }</a></li>
+									href="list.do?${page.getmakeURL(PAGE) }">${PAGE }</a></li>
 							</c:if>
 						</c:forEach>
 
 						<c:if test="${page.next }">
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.endPage+1 }&option=${option }&search=${search }" aria-label="Next">
+								href="list.do?${page.getmakeURL(page.endPage+1) }" aria-label="Next">
 									<span aria-hidden="true">&raquo;</span> <span class="sr-only">Next</span>
 							</a></li>
 							<li class="page-item"><a class="page-link"
-								href="list.do?reqPage=${page.finalEndPage}&option=${option }&search=${search }">▶</a></li>
+								href="list.do?${page.getmakeURL(page.finalEndPage) }">▶</a></li>
 						</c:if>
 					</ul>
 				</td>

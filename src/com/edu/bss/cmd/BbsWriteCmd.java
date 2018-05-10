@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.edu.bbs.dto.BbsDTO;
 import com.edu.bbs.dao.BbsDAO;
+import com.edu.bbs.dao.BbsDAOimpl;
 
 public class BbsWriteCmd implements BCommand {
 
@@ -17,7 +18,7 @@ public class BbsWriteCmd implements BCommand {
 		bbsdto.setbName(request.getParameter("bName"));
 		bbsdto.setbContent(request.getParameter("bContent"));
 	
-		BbsDAO bbsdao = BbsDAO.getInstance();
+		BbsDAO bbsdao = BbsDAOimpl.getInstance();
 		bbsdao.write(bbsdto);
 		
 		int reqPage;

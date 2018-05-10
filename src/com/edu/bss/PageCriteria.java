@@ -103,7 +103,24 @@ public class PageCriteria {
 	public void setRecordCriteria(RecordCriteria recordCriteria) {
 		this.recordCriteria = recordCriteria;
 	}
+	
+	public String getmakeURL(int reqPage) {
+		StringBuffer str = new StringBuffer();
 
+		str.append("reqPage="+reqPage);
+		
+		if(recordCriteria instanceof FindCriteria) {	// 객체(부모) instanceof 클래스(자식)	:  자식을 부모타입으로 형변환할수있는지 확인..?용도? 
+			if(((FindCriteria)recordCriteria).getOption() != null ||((FindCriteria)recordCriteria).getOption().trim().equals("")) {
+				str.append("&option="+((FindCriteria)recordCriteria).getOption());
+			}
+			if(((FindCriteria)recordCriteria).getSearch() != null || ((FindCriteria)recordCriteria).getSearch().trim().equals("")) {
+				str.append("&search="+((FindCriteria)recordCriteria).getSearch());
+			}
+		}
+		
+		return str.toString();
+	}
+	
 	@Override
 	public String toString() {
 		return "PageCriteria [pageNumPerPage=" + pageNumPerPage + ", startPage=" + startPage

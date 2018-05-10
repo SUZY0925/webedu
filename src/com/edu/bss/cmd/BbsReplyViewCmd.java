@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.edu.bbs.dao.BbsDAO;
+import com.edu.bbs.dao.BbsDAOimpl;
 import com.edu.bbs.dto.BbsDTO;
 
 public class BbsReplyViewCmd implements BCommand {
@@ -13,7 +14,7 @@ public class BbsReplyViewCmd implements BCommand {
 
 		int bNum = Integer.valueOf(request.getParameter("bNum"));
 		
-		BbsDAO bbsdao = BbsDAO.getInstance();
+		BbsDAO bbsdao = BbsDAOimpl.getInstance();
 		BbsDTO bbsdto = bbsdao.replyView(bNum);
 		
 		request.setAttribute("replyView", bbsdto);
