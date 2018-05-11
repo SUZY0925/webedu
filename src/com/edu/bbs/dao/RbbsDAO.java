@@ -41,4 +41,6 @@ public interface RbbsDAO {
 	// 검색한 글 전체 수 가져오기
 	int getSearchListCount(String option, String search);
 
+	ArrayList<RbbsDTO> list(int bNum);
+
 }

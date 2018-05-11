@@ -9,14 +9,6 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-<!--   <servlet>
-  <servlet-name>HelloServlet</servlet-name>
-  <servlet-class>com.edu.Hello</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  <servlet-name>HelloServlet</servlet-name>
-  <url-pattern>/He2</url-pattern>
-  </servlet-mapping> -->
   <error-page>
     <error-code>404</error-code>
     <location>/err/404_error.jsp</location>

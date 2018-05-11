@@ -89,6 +89,40 @@ public class RbbsDAOimpl implements RbbsDAO {
 		}
 		return alist;
 	}
+	
+	@Override
+	public ArrayList<RbbsDTO> list(int bNum) {
+		ArrayList<RbbsDTO> alist = new ArrayList<>();
+		RbbsDTO rbbsdto;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select t2.* from (select row_number() over ")
+			.append("(ORDER BY rgroup desc, rstep asc) as num, t1.* FROM replybbs t1) t2 where bNum=?");
+
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setInt(1, bNum);
+			rs = pstmt.executeQuery();
+				while(rs.next()) {
+					rbbsdto = new RbbsDTO();
+					rbbsdto.setBnum(rs.getInt("Bnum"));
+					rbbsdto.setRnum(rs.getInt("Rnum"));
+					rbbsdto.setRname(rs.getString("Rname"));
+					rbbsdto.setRcontent(rs.getString("Rcontent"));
+					rbbsdto.setRcdate(rs.getDate("Rcdate"));
+					rbbsdto.setRgroup(rs.getInt("Rgroup"));
+					rbbsdto.setRstep(rs.getInt("Rstep"));
+					rbbsdto.setRindent(rs.getInt("Rindent"));
+					alist.add(rbbsdto);
+				}
+				
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"ArrayList<RbbsDTO> list(int startRow, int endRow)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt, rs);
+		}
+		return alist;
+	}
 
 	@Override
 	public int getListCount() {
