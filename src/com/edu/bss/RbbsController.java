@@ -18,7 +18,9 @@ import com.edu.bss.cmd.BbsReplyCmd;
 import com.edu.bss.cmd.BbsReplyViewCmd;
 import com.edu.bss.cmd.BbsViewCmd;
 import com.edu.bss.cmd.BbsWriteCmd;
+import com.edu.bss.cmd.RbbsDeleteCmd;
 import com.edu.bss.cmd.RbbsListCmd;
+import com.edu.bss.cmd.RbbsModifyCmd;
 import com.edu.bss.cmd.RbbsWriteCmd;
 
 /**
@@ -77,6 +79,18 @@ public class RbbsController extends HttpServlet {
 		// 댓글 목록가져오기
 		case "/rbbs/list":
 			command = new RbbsListCmd();
+			command.execute(request, response);
+			break;
+		
+		// 댓글 수정하기
+		case "/rbbs/modify":
+			command = new RbbsModifyCmd();
+			command.execute(request, response);
+			break;
+		
+		// 댓글 삭제하기
+		case "/rbbs/delete":
+			command = new RbbsDeleteCmd();
 			command.execute(request, response);
 			break;
 

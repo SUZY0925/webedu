@@ -19,10 +19,10 @@ public interface RbbsDAO {
 	BbsDTO view(int bNum);
 
 	// 글수정하기
-	BbsDTO modify(RbbsDTO rbbsdto);
+	void modify(String rNum, String rContent);
 
 	//글삭제하기
-	void delete(int bNum);
+	void delete(String rNum);
 
 	// 다음글 이전글 이동
 	BbsDTO pageNav(int bNum, int np);

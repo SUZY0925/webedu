@@ -137,15 +137,41 @@ public class RbbsDAOimpl implements RbbsDAO {
 	}
 
 	@Override
-	public BbsDTO modify(RbbsDTO rbbsdto) {
-		// TODO Auto-generated method stub
-		return null;
+	public void modify(String rNum, String rContent) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("update replybbs set rContent =? where rNum = ?");
+		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			pstmt.setString(1, rContent);
+			pstmt.setInt(2, Integer.valueOf(rNum));
+			
+			pstmt.executeQuery();
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"modify(String rNum, String rContent)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt);
+		}
 	}
 
 	@Override
-	public void delete(int bNum) {
-		// TODO Auto-generated method stub
+	public void delete(String rNum) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from replybbs where rNum=?");
 
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+
+			pstmt.setInt(1, Integer.valueOf(rNum));
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName() + "void delete(int rNum)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt);
+		}
 	}
 
 	@Override
