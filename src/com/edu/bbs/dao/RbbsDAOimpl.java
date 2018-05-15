@@ -54,18 +54,20 @@ public class RbbsDAOimpl implements RbbsDAO {
 	}
 
 	@Override
-	public ArrayList<RbbsDTO> list(int startRow, int endRow) {
+	public ArrayList<RbbsDTO> list(int bNum, int startRow, int endRow) {
 		ArrayList<RbbsDTO> alist = new ArrayList<>();
 		RbbsDTO rbbsdto;
 		StringBuffer sql = new StringBuffer();
 		sql.append("select t2.* from (select row_number() over ")
-			.append("(ORDER BY rgroup desc, rstep asc) as num, t1.* FROM replybbs t1) t2 where num between ? and ?");
+			.append("(ORDER BY rgroup desc, rstep asc) as num, t1.* FROM replybbs t1 where bnum = ?) t2 where num between ? and ?");
 
 		try {
 			conn = DataBaseUtil.getConnection();
 			pstmt = conn.prepareStatement(sql.toString());
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, endRow);
+			pstmt.setInt(1, bNum);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			
 			
 			rs = pstmt.executeQuery();
 			
@@ -79,6 +81,8 @@ public class RbbsDAOimpl implements RbbsDAO {
 					rbbsdto.setRgroup(rs.getInt("Rgroup"));
 					rbbsdto.setRstep(rs.getInt("Rstep"));
 					rbbsdto.setRindent(rs.getInt("Rindent"));
+					rbbsdto.setRgood(rs.getInt("rGood"));
+					rbbsdto.setRbad(rs.getInt("rBad"));
 					alist.add(rbbsdto);
 				}
 				
@@ -113,6 +117,8 @@ public class RbbsDAOimpl implements RbbsDAO {
 					rbbsdto.setRgroup(rs.getInt("Rgroup"));
 					rbbsdto.setRstep(rs.getInt("Rstep"));
 					rbbsdto.setRindent(rs.getInt("Rindent"));
+					rbbsdto.setRgood(rs.getInt("rGood"));
+					rbbsdto.setRbad(rs.getInt("rBad"));
 					alist.add(rbbsdto);
 				}
 				
@@ -181,21 +187,131 @@ public class RbbsDAOimpl implements RbbsDAO {
 	}
 
 	@Override
-	public BbsDTO replyView(int bNum) {
-		// TODO Auto-generated method stub
-		return null;
+	public RbbsDTO replyView(int rNum) {
+		RbbsDTO rbbsdto=null;
+		String sql = "select bnum, rgroup, rstep, rindent from replybbs where rnum = ?";
+
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+
+			pstmt.setInt(1, rNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				rbbsdto = new RbbsDTO();
+				rbbsdto.setBnum(rs.getInt("bNum"));
+				rbbsdto.setRgroup(rs.getInt("rGroup"));
+				rbbsdto.setRstep(rs.getInt("rStep"));
+				rbbsdto.setRindent(rs.getInt("rindent"));
+			}
+			
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO replyView(int bNum)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt, rs);
+		}
+		return rbbsdto;
 	}
 
 	@Override
 	public void reply(RbbsDTO rbbsdto) {
-		// TODO Auto-generated method stub
+		
+		RbbsDTO rbbsdtoV = replyView(rbbsdto.getRnum());
+		updateStep(rbbsdtoV.getRgroup(), rbbsdtoV.getRstep());
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("insert into replybbs (rnum, bnum, rname, rcontent, rgroup, rstep, rindent) ")
+		.append("values(rbbsnum_seq.nextval,?,?,?,?,?,?)");
+		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setInt(1, rbbsdtoV.getBnum());
+			pstmt.setString(2, rbbsdto.getRname());
+			pstmt.setString(3, rbbsdto.getRcontent());
+			
+			pstmt.setInt(4, rbbsdtoV.getRgroup());
+			pstmt.setInt(5, rbbsdtoV.getRstep()+1);
+			pstmt.setInt(6, rbbsdtoV.getRindent()+1);
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"reply(RbbsDTO rbbsdto)");
+		} finally {
+			DataBaseUtil.close(conn, pstmt);
+		}
 
 	}
 
 	@Override
-	public void updateStep(int bgroup, int bstep) {
-		// TODO Auto-generated method stub
-
+	public void updateStep(int rgroup, int rstep) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("update replybbs set rstep = rstep+1 where rgroup=? and rstep > ?");
+		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setInt(1, rgroup);
+			pstmt.setInt(2, rstep);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"updateStep(int rgroup, int rstep)");
+		}  finally {
+			DataBaseUtil.close(conn, pstmt);
+		}
+	}
+	
+	@Override
+	public void goodOrBad(String rNum, String goodOrBad) {
+		StringBuffer sql = new StringBuffer();
+		
+		if(goodOrBad.equals("good")) {
+			sql.append("update replybbs set rgood = rgood+1 where rnum = ?");
+		} else if(goodOrBad.equals("bad")) {
+			sql.append("update replybbs set rbad = rbad+1 where rnum = ?");
+		}
+		
+		try {
+			conn = DataBaseUtil.getConnection();
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			pstmt.setInt(1, Integer.valueOf(rNum));
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			DataBaseUtil.printSQLException(e, this.getClass().getName()+"goodOrBad(String rNum, String goodOrBad)");
+		}  finally {
+			DataBaseUtil.close(conn, pstmt);
+		}
+	}
+	
+	@Override
+	public int replyTotalRec(int bNum) {
+		int count = 0;
+		StringBuffer sql = new StringBuffer();
+		sql.append("select count(*) from replybbs where bNum = ?");
+		
+		try {
+         conn = DataBaseUtil.getConnection();
+         pstmt = conn.prepareStatement(sql.toString());
+         pstmt.setInt(1,bNum);
+         
+         rs = pstmt.executeQuery();
+         
+         if(rs.next()){
+            count = rs.getInt(1);
+         }
+      } catch (SQLException e) {
+         DataBaseUtil.printSQLException(e, this.getClass().getName() + " int replyTotalRec()");
+      } finally {
+         DataBaseUtil.close(conn, pstmt, rs);
+      }
+      return count; // 총 레코드 수 리턴
 	}
 
 	@Override
@@ -209,5 +325,7 @@ public class RbbsDAOimpl implements RbbsDAO {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	
 
 }

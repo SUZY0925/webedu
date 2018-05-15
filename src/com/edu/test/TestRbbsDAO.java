@@ -54,7 +54,7 @@ class TestRbbsDAO {
 			System.out.println(rbbsdto.toString());
 		}
 	}*/
-	
+	/*
 	@Test
 	void delete() {
 		ArrayList<RbbsDTO> alist;
@@ -72,6 +72,21 @@ class TestRbbsDAO {
 		for(RbbsDTO rbbsdto : alist) {
 			System.out.println(rbbsdto.toString());
 		}
+	}*/
+	
+	@Test
+	void reply() {
+		RbbsDTO rbbsdto = new RbbsDTO();
+		
+		rbbsdto.setBnum(1);
+		rbbsdto.setRnum(27);
+		rbbsdto.setRname("대댓작성자");
+		rbbsdto.setRcontent("대댓내용");
+		
+		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
+		
+		rbbsdao.reply(rbbsdto);
+		
 	}
 
 }

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.edu.bbs.dao.RbbsDAO;
 import com.edu.bbs.dao.RbbsDAOimpl;
 import com.edu.bbs.dto.RbbsDTO;
+import com.edu.bss.PageCriteria;
+import com.edu.bss.RecordCriteria;
 
 public class RbbsListCmd implements BCommand {
 
@@ -16,15 +18,26 @@ public class RbbsListCmd implements BCommand {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
 		ArrayList<RbbsDTO> alist = new ArrayList<>();
+		
+		int bNum = Integer.valueOf(request.getParameter("bNum"));
+		int reReqPage;
+		try {
+			reReqPage = Integer.valueOf(request.getParameter("reReqPage"));
+		} catch (NumberFormatException e) {
+			reReqPage = 1;
+		}
+		
+		RecordCriteria rc = new RecordCriteria(reReqPage);
+		int replyTotalRec = rbbsdao.replyTotalRec(bNum);
+		PageCriteria pc = new PageCriteria(rc,replyTotalRec);
+		
+		request.setAttribute("page", pc);
+		request.setAttribute("rc", rc);
+		
+		
+		alist = rbbsdao.list( bNum, rc.getStartRecord(), rc.getEndRecord());
 		StringBuffer str = new StringBuffer();
 
-		int bNum = Integer.valueOf(request.getParameter("bNum"));
-		alist = rbbsdao.list(bNum);
-		/*
-		 * {"employees":[ { "firstName":"John", "lastName":"Doe" }, {
-		 * "firstName":"Anna", "lastName":"Smith" }, { "firstName":"Peter",
-		 * "lastName":"Jones" } ]}
-		 */
 		str.append("{\"result\" : [");
 		int i = 0;
 		for (RbbsDTO rbbsdto : alist) {
@@ -34,6 +47,7 @@ public class RbbsListCmd implements BCommand {
 			str.append("\"RCDATE\":\"" + rbbsdto.getRcdate() + "\",");
 			str.append("\"RCONTENT\":\"" + rbbsdto.getRcontent() + "\",");
 			str.append("\"RNAME\":\"" + rbbsdto.getRname() + "\",");
+			str.append("\"RINDENT\":\"" + rbbsdto.getRindent() + "\",");
 			str.append("\"RGOOD\":\"" + rbbsdto.getRgood() + "\",");
 
 			if (alist.size() == i) {
@@ -42,9 +56,18 @@ public class RbbsListCmd implements BCommand {
 				str.append("\"RBAD\":\"" + rbbsdto.getRbad() + "\"},");
 			}
 		}
-		str.append("]}");
-
+		str.append("] ,");
+		/*
+		{ "result" : [ { }, { }, { } ] ,
+		 "page" : { "startPage" : 1, "endPage" : 10 } }
+		*/
+		str.append("\"page\" : ");
+		str.append("{\"startPage\" : " + rc.getStartRecord() + ", ");
+		str.append("\"endPage\" : " + rc.getEndRecord());
+		str.append("}}");
 		response.getWriter().write(str.toString());
+		
+		
 	}
 
 }

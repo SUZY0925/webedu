@@ -11,7 +11,7 @@ public interface RbbsDAO {
 	void write(RbbsDTO rbbsdto);
 
 	// 댓글 목록
-	ArrayList<RbbsDTO> list(int startRow, int endRow);
+	ArrayList<RbbsDTO> list(int bNum, int startRow, int endRow);
 	// 댓글 갯수
 	int getListCount();
 
@@ -28,7 +28,7 @@ public interface RbbsDAO {
 	BbsDTO pageNav(int bNum, int np);
 
 	//원글 가져오기
-	BbsDTO replyView(int bNum);
+	RbbsDTO replyView(int bNum);
 
 	// 답글 등록하기
 	void reply(RbbsDTO rbbsdto);
@@ -42,5 +42,9 @@ public interface RbbsDAO {
 	int getSearchListCount(String option, String search);
 
 	ArrayList<RbbsDTO> list(int bNum);
+
+	void goodOrBad(String rNum, String goodOrBad);
+
+	int replyTotalRec(int bNum);
 
 }

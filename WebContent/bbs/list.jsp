@@ -45,8 +45,8 @@ $(function() {
 					<!--여기의 list는 BbsListCmd의 setAttribute에서 저장한 alist -->
 					<tr>
 						<th scope="row">${dto.bNum }</th>
-						<td><c:forEach begin="1" end="${dto.bIndent }">&nbsp;</c:forEach>
-						<c:if test="${dto.bIndent >0}">ㄴ</c:if> <a class="text-dark"
+						<td><c:forEach begin="1" end="${dto.bIndent }">　</c:forEach>
+						<c:if test="${dto.bIndent >0}">└</c:if> <a class="text-dark"
 							href="view.do?bNum=${dto.bNum }&${page.getmakeURL(page.recordCriteria.reqPage) }">${dto.bTitle }</a></td>
 						<td>${dto.bName }</td>
 						<td>${dto.bCdate }</td>

@@ -87,6 +87,7 @@ public class BbsDAOimpl implements BbsDAO {
 					bbsdto.setbName(rs.getString("bName"));
 					bbsdto.setbCdate(rs.getDate("bCdate"));
 					bbsdto.setbHit(rs.getInt("bHit"));
+					bbsdto.setbIndent(rs.getInt("bIndent"));
 					alist.add(bbsdto);
 				}
 				
