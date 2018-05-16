@@ -27,13 +27,9 @@ public class RbbsListCmd implements BCommand {
 			reReqPage = 1;
 		}
 		
-		RecordCriteria rc = new RecordCriteria(reReqPage);
+		RecordCriteria rc = new RecordCriteria(reReqPage,10);
 		int replyTotalRec = rbbsdao.replyTotalRec(bNum);
 		PageCriteria pc = new PageCriteria(rc,replyTotalRec);
-		
-		request.setAttribute("page", pc);
-		request.setAttribute("rc", rc);
-		
 		
 		alist = rbbsdao.list( bNum, rc.getStartRecord(), rc.getEndRecord());
 		StringBuffer str = new StringBuffer();
@@ -61,10 +57,14 @@ public class RbbsListCmd implements BCommand {
 		{ "result" : [ { }, { }, { } ] ,
 		 "page" : { "startPage" : 1, "endPage" : 10 } }
 		*/
-		str.append("\"page\" : ");
-		str.append("{\"startPage\" : " + rc.getStartRecord() + ", ");
-		str.append("\"endPage\" : " + rc.getEndRecord());
+		str.append("\"pageCriteria\" : {");
+		str.append("\"startPage\" : "		+ pc.getStartPage()		+ ", ");
+		str.append("\"endPage\" : " 		+ pc.getEndPage()			+ ", ");
+		str.append("\"finalEndPage\" : " + pc.getFinalEndPage()  + ", ");
+		str.append("\"prev\" : " 			+ pc.isPrev() 				+ ", ");
+		str.append("\"next\" : "			+ pc.isNext());
 		str.append("}}");
+		
 		response.getWriter().write(str.toString());
 		
 		

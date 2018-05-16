@@ -9,21 +9,20 @@ import com.edu.bbs.dao.RbbsDAOimpl;
 import com.edu.bbs.dto.RbbsDTO;
 
 class TestRbbsDAO {
-
-/*	@Test
+/*
+	@Test
 	void test() {
 		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
 		RbbsDTO rbbsdto = new RbbsDTO();
 		
-		rbbsdto.setBnum(1);
-		rbbsdto.setRname("test");
-		rbbsdto.setRcontent("reply test");
-		
-		rbbsdao.write(rbbsdto);
-		
-		System.out.println(rbbsdto.toString());
-	}*/
-	
+		for(int i = 0; i <1567; ++i) {
+			rbbsdto.setBnum(1);
+			rbbsdto.setRname("test_"+i);
+			rbbsdto.setRcontent("reply test_"+i);
+			rbbsdao.write(rbbsdto);
+		}
+	}
+	*/
 /*	@Test
 	void test2() {
 		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
@@ -73,7 +72,7 @@ class TestRbbsDAO {
 			System.out.println(rbbsdto.toString());
 		}
 	}*/
-	
+/*	
 	@Test
 	void reply() {
 		RbbsDTO rbbsdto = new RbbsDTO();
@@ -87,6 +86,17 @@ class TestRbbsDAO {
 		
 		rbbsdao.reply(rbbsdto);
 		
+	}*/
+	
+	@Test
+	void list() {
+		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
+		
+		ArrayList<RbbsDTO> alist = rbbsdao.list(1,1,10);
+		
+		for(RbbsDTO rbbsdto : alist) {
+			System.out.println(rbbsdto.toString());
+		}
 	}
 
 }

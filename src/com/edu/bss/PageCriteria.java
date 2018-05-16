@@ -1,7 +1,7 @@
 package com.edu.bss;
 
 public class PageCriteria {
-	private final int pageNumPerPage = 10; // 한페이지에 보여줄 페이지수
+	private int pageNumPerPage = 10; // 한페이지에 보여줄 페이지수
 	private int startPage; // 한페이지의 시작페이지
 	private int endPage; // 한페이지의 종료페이지
 
@@ -21,6 +21,13 @@ public class PageCriteria {
 		this(recordCritera);
 		this.totalRec = totalRec;
 		this.init();
+	}
+	
+	public PageCriteria(RecordCriteria recordCriteria, int totalRec, int pageNumPerPage) {
+		this(recordCriteria);
+		this.totalRec = totalRec;
+		this.pageNumPerPage = pageNumPerPage;
+		init();
 	}
 
 	private void init() {
@@ -46,6 +53,10 @@ public class PageCriteria {
 
 	public int getPageNumPerPage() {
 		return pageNumPerPage;
+	}
+	
+	public void setPageNumPerPage(int pageNumPerPage) {
+		this.pageNumPerPage = pageNumPerPage;
 	}
 
 	public int getStartPage() {

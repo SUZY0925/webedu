@@ -7,42 +7,71 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="/webedu/public/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="/webedu/public/jquery/jquery-3.3.1.js"></script>
 <script src="/webedu/public/bootstrap/dist/js/bootstrap.js"></script>
 <title>댓글</title>
 <style>
-#modifyDiv {
-	width: 300px;
+
+ #modifyDiv {
+	/* width: 300px;
 	height: 200px;
-	position: absolute;
 	background-color: gray;
 	top: 20%;
 	left: 37%;
 	padding: 20px;
-	z-index: 10;
-}
+	z-index: 10; */
+} 
 
-#rereDiv {
+
+/* #rereDiv {
 	width: 300px;
 	height: 200px;
-	position: absolute;
 	background-color: gray;
 	top: 40%;
 	left: 37%;
 	padding: 20px;
 	z-index: 10;
 }
-
-#pageNumList > li {
+ */
+#pageNumList>li {
 	list-style: none;
 	display: inline;
-	border: 1px solid #bcbcbc;
 	padding: 5px;
 	margin-right: :-4px;
 }
+
+#modifyBtn {
+	margin-left: 5px;
+}
+
+.reList {
+	margin-bottom: 20px;
+	list-style: none;
+}
+
+#goodBtn {
+	margin-left: 5px;
+}
+
+#replyContent {
+	margin-top:5px;
+}
+
+#allDiv {
+  width: 100%;
+  padding-right: 50px;
+  padding-left: 50px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 </style>
 <script>
-	var bNum = 1;
+	var bNum = ${bbsdto.bNum};
+	var reReqPage = 1;
+	
 	$(function() {
 		// 댓글수정양식 숨기기
 		$("#modifyDiv").hide();
@@ -50,18 +79,24 @@
 		// 대댓글 양식 숨기기
 		$("#rereDiv").hide();
 
+		//replyList(); // 댓글목록 가져오기 호출
+		
+		replyList(reReqPage);
+		
 		// 댓글 목록 처리
 		$("#reply").on("click", ".reList #modifyBtn", function() {
 			$("#rereDiv").hide();
+			$("#writeReply").hide();
 			var li = $(this).parent();
-			console.log(li);
+			
 			var rNum = li.attr("data-rNum");
-			console.log(rNum);
-			var reContent = li.text();
+			
+			var strArray=li.text().split("|");
+			var reContent = strArray[0];
 
 			$(".title-diaLog").html(rNum);
 			$("#reContent").val(reContent);
-			$("#modifyDiv").show("slow");
+			$("#modifyDiv").show();
 
 		});
 
@@ -69,6 +104,14 @@
 		$("#exitBtn").click(function() {
 			$("#modifyDiv").hide();
 			$("#rereDiv").hide();
+			$("#writeReply").show();
+		});
+		
+		//대댓글 작성창 닫기
+		$("#reExitBtn").click(function() {
+			$("#modifyDiv").hide();
+			$("#rereDiv").hide();
+			$("#writeReply").show();
 		});
 
 
@@ -84,9 +127,13 @@
 					rNum : rNum
 				},
 				success : function(result) {
-					replyList();
+					replyList(reReqPage);
 					$("#modifyDiv").hide();
 					$("#rereDiv").hide();
+					$("#writeReply").show();
+					
+					$("#reWriter").val("");
+					$("#reReplyContent").val("");
 				},
 				error : function(e) {
 					console.log("실패" + e);
@@ -107,9 +154,12 @@
 					rContent : rContent
 				},
 				success : function(result) {
-					replyList();
+					replyList(reReqPage);
 					$("#modifyDiv").hide();
 					$("#rereDiv").hide();
+					$("#writeReply").show();
+					$("#reWriter").val("");
+					$("#reReplyContent").val("");
 				},
 				error : function(e) {
 					console.log("실패" + e);
@@ -118,8 +168,6 @@
 
 
 		});
-
-		replyList(); // 댓글목록 가져오기 호출
 
 		// 댓글 작성하기
 		$("#replyBtn").click(function() {
@@ -150,7 +198,11 @@
 					$("#modifyDiv").hide();
 					$("#rereDiv").hide();
 					alert("댓글 작성 성공~");
-					replyList();
+					replyList(reReqPage);
+					$("#writeReply").show();
+					$("#writer").val("");
+					$("#replyContent").val("");
+					
 				},
 				error : function(e) {
 					console.log("실패" + e);
@@ -160,13 +212,17 @@
 
 
 		// '댓글' 버튼을 클릭했을때
-		$("#reReplyBtn").click(function() {
-			$("#rereDiv").show("slow");
+		$("#reply").on("click", ".reList #reReplyBtn", function() {
+			var li = $(this).parent();
+			var rNum = li.attr("data-rNum");
+			
+			$("#writeReply").hide();
+			$("#rereDiv").show();
 			$("#reReplyContent").val("ㄴ");
 
 			// 댓글 작성하기를 클릭했을때
 			$("#rereplyBtn").click(function() {
-				var rNum = $(".title-diaLog").html();
+				
 				var reWriter = $("#reWriter").val();
 				var reReplyContent = $("#reReplyContent").val();
 
@@ -194,7 +250,7 @@
 						$("#modifyDiv").hide();
 						$("#rereDiv").hide();
 						alert("댓글 작성 성공~");
-						replyList();
+						replyList(reReqPage);
 					},
 					error : function(e) {
 						console.log("실패" + e);
@@ -203,8 +259,8 @@
 			});
 		});
 
-		$("#reply").on("click", ".reList #goodBtn", function() {
-			var li = $(this).parent();
+		$("#reply").on("click", ".reList a #goodBtn", function() {
+			var li = $(this).parent().parent();
 			var rNum = li.attr("data-rNum");
 
 			$.ajax({
@@ -216,7 +272,7 @@
 					goodOrBad : "good"
 				},
 				success : function(result) {
-					replyList();
+					replyList(reReqPage);
 					$("#modifyDiv").hide();
 					$("#rereDiv").hide();
 					alert("좋아요");
@@ -227,8 +283,8 @@
 			});
 		});
 
-		$("#reply").on("click", ".reList #badBtn", function() {
-			var li = $(this).parent();
+		$("#reply").on("click", ".reList a #badBtn", function() {
+			var li = $(this).parent().parent();
 			var rNum = li.attr("data-rNum");
 
 			$.ajax({
@@ -240,105 +296,151 @@
 					goodOrBad : "bad"
 				},
 				success : function(result) {
-					replyList();
+					replyList(reReqPage);
 					$("#modifyDiv").hide();
 					$("#rereDiv").hide();
 					alert("싫어요");
+					
 				},
 				error : function(e) {
 					console.log("실패" + e);
 				}
 			});
 		});
-
-
+		
+		
+		$("#pageNumList").on("click", "a ", function(evt) {
+			evt.preventDefault();
+			reReqPage = $(this).attr("href");
+			replyList(reReqPage);
+			console.log("ㅇㅇ"+reReqPage);
+		});
 	});
 
 
-
-
 	// 댓글 목록 가져오기	
-	function replyList() {
+	function replyList(reReqPage) {
 		var str = "";
 		$.ajax({
 			type : "GET",
-			url : "/webedu/rbbs/list?reReqPage=1&bNum=" + bNum,
+			url : "/webedu/rbbs/list?reReqPage=" + reReqPage + "&bNum=" + bNum,
 			dataType : "json",
 			success : function(data) {
-				/* 				console.log(data);
-								console.log(data.result); */
-
+				 console.log(data);
+				 console.log(data.result);
+				 console.log(data.pageCriteria);
 				$.each(data.result, function(idx, rec) {
 					console.log(rec);
-					$(rec.RINDENT).each(function(i) {});
+					str+= rec.RNAME + " | " + rec.RCDATE;
+					$(rec.RINDENT).each(function(i) {
+						str+= "인덴트"+i;
+					});
 					str += "<li data-rNum='" + rec.RNUM + "' class = 'reList'>"
-						+ rec.RINDENT + " | "
-						+ rec.RCDATE + " | "
-						+ rec.RNAME + " | "
 						+ rec.RCONTENT + " | "
 						+ rec.RGOOD + " | "
 						+ rec.RBAD
-						+ "<button id=\"modifyBtn\">수정</button>"
-						+ "<button id=\"goodBtn\">좋아요</button>"
-						+ "<button id=\"badBtn\">싫어요</button>"
+						+ "<button id=\"modifyBtn\" style=\"float:right\";>수정</button>"
+						+ "<button id=\"reReplyBtn\" style=\"float:right\";>댓글</button>"
+						
+						+ "<a href='#'> "
+				        + " <span class='glyphicon glyphicon-thumbs-up' id='goodBtn'></span>"
+				        + "</a>"
+				        + "<a href='#'> "
+				        + " <span class='glyphicon glyphicon-thumbs-down' id='badBtn'></span>"
+				        + "</a>"
+				        
 						+ "</li>";
-
 				});
 				$("#reply").html(str);
+			
+				//페이지 리스트 호출
+				showPageList(data.pageCriteria);
 			},
 			error : function(error) {
 				console.log("실패" + error);
 			}
 		});
-
 	}
+	
+	// 페이지 리스트
+	function showPageList(pageCriteria) {
+		console.log("ppppc"+pageCriteria);
+		var str = "";
+		
+		// 이전표시
+		if(pageCriteria.prev) {
+			str += "<li><a href='1'>◀</a></li>";
+			str += "<li><a href='" + (pageCriteria.startPage-1) + "' aria-label=\"Prev\">" + 
+			"<span aria-hidden=\"true\">&laquo;</span> <span class=\"sr-only\">Prev</span> "
+			+ "</a></li>";
+		
+		}
+		for(var i= pageCriteria.startPage, end=pageCriteria.endPage; i<=end; i++)  {
+			if(reReqPage == i) {
+			str += "<li class=\"page-item active\"><a class=\"page-link\" href='#'>" + i + "</a></li>";
+			} else {
+			str += "<li class=\"page-item \"><a class=\"page-link\" href='" + i + "'>" + i + "</a></li>";
+			}
+		}
+		//다음 표시
+		if(pageCriteria.next) {
+			str += "<li><a href='" + (pageCriteria.endPage+1) + "' aria-label=\"Next\">" + 
+			"<span aria-hidden=\"true\">&raquo;</span> <span class=\"sr-only\">Next</span> "
+			+ "</a></li>";
+			str += "<li><a href='" + (pageCriteria.finalEndPage) + "'>" + "▶</a></li>";			
+		}
+		$("#pageNumList").html(str);
+	}
+	
 </script>
 
 </head>
 <body>
-	<div id="modifyDiv">
-		<span class="title-diaLog"></span>번 댓글
-		<div>
-			<textarea id="reContent" cols="30" rows="3"></textarea>
+	<div class="container" id="allDiv">
+	
+		<!-- 댓글 작성하기 폼 -->
+		<div id="writeReply">
+		<input type="text" name="" id="writer" class="form-control-m" placeholder="작성자" /><br>
+		<textarea name="rContent" id="replyContent" class="form-control-m" cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요." ></textarea>
+		<button id="replyBtn" style="float:right">댓글작성</button>
 		</div>
-		<div>
-			<button id="reReplyBtn">댓글</button>
-			<button id="reModifyBtn">수정</button>
-			<button id="reDelBtn">삭제</button>
-			<button id="exitBtn">닫기</button>
+		
+		<!-- 댓글의 수정버튼을 눌렀을때의 폼.. -->
+		<div id="modifyDiv">
+			<span class="title-diaLog" ></span>번 댓글<br>
+				<textarea id="reContent" cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요."></textarea>
+			<div style="float:right">
+				<button id="reModifyBtn">수정</button>
+				<button id="reDelBtn">삭제</button>
+				<button id="exitBtn">닫기</button>
+			</div>
+		</div>
+		
+		<!-- 대댓글 작성할때의 폼.. -->
+		<div id="rereDiv">
+			<input type="text" name="" id="reWriter" class="form-control-m"
+				placeholder="작성자" /><br>
+			<textarea name="rContent" id="reReplyContent" class="form-control-m" cols="60" rows="3"
+				placeholder="이곳에 댓글을 입력하세요."></textarea>
+			<br>
+			<button id="rereplyBtn">댓글작성</button>
+			<button id="reExitBtn">닫기</button>
 		</div>
 
+
+
+
+
+
+		<h4>댓글리스트</h4>
+		<ul id="reply">
+
+		</ul>
+		<ul id="pageNumList"
+			class="pagination pagination-m justify-content-center">
+
+		</ul>
 	</div>
-	<div id="rereDiv">
-		작성자 : <input type="text" name="" id="reWriter" /><br> 댓글 :
-		<textarea name="rContent" id="reReplyContent" cols="30" rows="3"></textarea>
-		<br>
-		<button id="rereplyBtn">댓글작성</button>
-	</div>
 
-	작성자 :
-	<input type="text" name="" id="writer" />
-	<br> 댓글 :
-	<textarea name="rContent" id="replyContent" cols="30" rows="3"></textarea>
-	<br>
-	<button id="replyBtn">댓글작성</button>
-	<h4>댓글리스트</h4>
-
-	<ul id="reply">
-
-	</ul>
-
-	<ul id="pageNumList">
-		<li>1</li>
-		<li>2</li>
-		<li>3</li>
-		<li>4</li>
-		<li>5</li>
-		<li>6</li>
-		<li>7</li>
-		<li>8</li>
-		<li>9</li>
-		<li>10</li>
-	</ul>
 </body>
 </html>

@@ -16,7 +16,6 @@ public class RbbsGoodORBadCmd implements BCommand {
 		String rNum = request.getParameter("rNum");
 		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
 		rbbsdao.goodOrBad(rNum, goodOrBad);
-		
 	}
 
 }
