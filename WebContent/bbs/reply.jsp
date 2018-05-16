@@ -13,7 +13,9 @@
 <script src="/webedu/public/bootstrap/dist/js/bootstrap.js"></script>
 <title>댓글</title>
 <style>
-
+.textByte {
+	display:inline;
+}
  #modifyDiv {
 	/* width: 300px;
 	height: 200px;
@@ -72,6 +74,37 @@
 	var bNum = ${bbsdto.bNum};
 	var reReqPage = 1;
 	
+	// 글자수 제한 두기
+	$(document).ready(function() {
+	    	$('textarea').on('keyup focus', function() {
+	    	var limitbyte = 197;
+	    	var str = $(this).val();
+	    	var strPiece = "";
+	    	var strLength = 0;
+	    	for(var i = 0; i<str.length; i++) {
+	    		if(strLength > limitbyte) {
+	    			break;
+	    		}
+	    		
+	    		var code = str.charCodeAt(i);
+	    		var ch = str.substr(i,1).toUpperCase();
+	    		
+	    		strPiece += str.substr(i,1);
+	    		code = parseInt(code);
+	    		if ((ch < "0" || ch > "9") && (ch < "A" || ch > "Z") && ((code > 255) || (code < 0)))
+	    		{
+                    strLength += 3; //UTF-8 3byte 로 계산
+                }else{
+                    strLength += 1;
+                }
+	    	}
+	    	$(".textByte").html(strLength+"/200");
+	    	$(this).val(strPiece);
+	    });
+	    
+	});
+
+
 	$(function() {
 		// 댓글수정양식 숨기기
 		$("#modifyDiv").hide();
@@ -91,8 +124,16 @@
 			
 			var rNum = li.attr("data-rNum");
 			
-			var strArray=li.text().split("|");
-			var reContent = strArray[0];
+			// 댓글내용 분리 작업.. 
+			var strArray = li.text().split("|");
+			var reContent = strArray[1].substring(11); // 날짜랑 분리,,
+			
+			// 대댓일 경우
+			if(reContent.indexOf("└") > 0) 
+			{
+				var arr = reContent.split("└ ");
+				reContent = arr[1];
+			}
 
 			$(".title-diaLog").html(rNum);
 			$("#reContent").val(reContent);
@@ -105,6 +146,7 @@
 			$("#modifyDiv").hide();
 			$("#rereDiv").hide();
 			$("#writeReply").show();
+			$('textarea').val("");
 		});
 		
 		//대댓글 작성창 닫기
@@ -132,8 +174,7 @@
 					$("#rereDiv").hide();
 					$("#writeReply").show();
 					
-					$("#reWriter").val("");
-					$("#reReplyContent").val("");
+					$('textarea').val("");
 				},
 				error : function(e) {
 					console.log("실패" + e);
@@ -158,8 +199,7 @@
 					$("#modifyDiv").hide();
 					$("#rereDiv").hide();
 					$("#writeReply").show();
-					$("#reWriter").val("");
-					$("#reReplyContent").val("");
+					$('textarea').val("");
 				},
 				error : function(e) {
 					console.log("실패" + e);
@@ -200,8 +240,7 @@
 					alert("댓글 작성 성공~");
 					replyList(reReqPage);
 					$("#writeReply").show();
-					$("#writer").val("");
-					$("#replyContent").val("");
+					$('textarea').val("");
 					
 				},
 				error : function(e) {
@@ -218,7 +257,6 @@
 			
 			$("#writeReply").hide();
 			$("#rereDiv").show();
-			$("#reReplyContent").val("ㄴ");
 
 			// 댓글 작성하기를 클릭했을때
 			$("#rereplyBtn").click(function() {
@@ -330,17 +368,26 @@
 				 console.log(data.result);
 				 console.log(data.pageCriteria);
 				$.each(data.result, function(idx, rec) {
-					console.log(rec);
-					str+= rec.RNAME + " | " + rec.RCDATE;
-					$(rec.RINDENT).each(function(i) {
-						str+= "인덴트"+i;
-					});
-					str += "<li data-rNum='" + rec.RNUM + "' class = 'reList'>"
-						+ rec.RCONTENT + " | "
+					if(rec.RINDENT==0 ) {
+						str+="<hr>";
+					}
+					str += "<li data-rNum='" + rec.RNUM + "' class = 'reList'>";
+						for(var i = 0; rec.RINDENT>i; i++){
+							str+= "&nbsp;&nbsp;&nbsp;&nbsp;";
+						}
+						str += rec.RNAME + " | " + rec.RCDATE +"<br>";
+						for(var i = 0; rec.RINDENT>i; i++){
+							str+= "&nbsp;&nbsp;&nbsp;";
+						}
+						if(rec.RINDENT>0) {
+							str+= "└ ";
+						}
+					
+						str += rec.RCONTENT + " | "
 						+ rec.RGOOD + " | "
 						+ rec.RBAD
-						+ "<button id=\"modifyBtn\" style=\"float:right\";>수정</button>"
-						+ "<button id=\"reReplyBtn\" style=\"float:right\";>댓글</button>"
+						+ "<button id=\"modifyBtn\" style=\"float:right\">수정</button>"
+						+ "<button id=\"reReplyBtn\" style=\"float:right\">댓글</button>"
 						
 						+ "<a href='#'> "
 				        + " <span class='glyphicon glyphicon-thumbs-up' id='goodBtn'></span>"
@@ -402,13 +449,14 @@
 		<div id="writeReply">
 		<input type="text" name="" id="writer" class="form-control-m" placeholder="작성자" /><br>
 		<textarea name="rContent" id="replyContent" class="form-control-m" cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요." ></textarea>
-		<button id="replyBtn" style="float:right">댓글작성</button>
+		<div class="textByte"></div>	<button id="replyBtn" style="float:right">댓글작성</button>
 		</div>
 		
 		<!-- 댓글의 수정버튼을 눌렀을때의 폼.. -->
 		<div id="modifyDiv">
 			<span class="title-diaLog" ></span>번 댓글<br>
 				<textarea id="reContent" cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요."></textarea>
+				<div class="textByte"></div>
 			<div style="float:right">
 				<button id="reModifyBtn">수정</button>
 				<button id="reDelBtn">삭제</button>
@@ -421,13 +469,11 @@
 			<input type="text" name="" id="reWriter" class="form-control-m"
 				placeholder="작성자" /><br>
 			<textarea name="rContent" id="reReplyContent" class="form-control-m" cols="60" rows="3"
-				placeholder="이곳에 댓글을 입력하세요."></textarea>
+				placeholder="이곳에 댓글을 입력하세요."></textarea><div class="textByte"></div>
 			<br>
 			<button id="rereplyBtn">댓글작성</button>
 			<button id="reExitBtn">닫기</button>
 		</div>
-
-
 
 
 

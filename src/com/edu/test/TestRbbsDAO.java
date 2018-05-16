@@ -9,20 +9,20 @@ import com.edu.bbs.dao.RbbsDAOimpl;
 import com.edu.bbs.dto.RbbsDTO;
 
 class TestRbbsDAO {
-/*
+
 	@Test
 	void test() {
 		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
 		RbbsDTO rbbsdto = new RbbsDTO();
 		
-		for(int i = 0; i <1567; ++i) {
-			rbbsdto.setBnum(1);
+		for(int i = 0; i <1500; ++i) {
+			rbbsdto.setBnum(58);
 			rbbsdto.setRname("test_"+i);
 			rbbsdto.setRcontent("reply test_"+i);
 			rbbsdao.write(rbbsdto);
 		}
 	}
-	*/
+	
 /*	@Test
 	void test2() {
 		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
@@ -87,7 +87,7 @@ class TestRbbsDAO {
 		rbbsdao.reply(rbbsdto);
 		
 	}*/
-	
+/*	
 	@Test
 	void list() {
 		RbbsDAO rbbsdao = RbbsDAOimpl.getInstance();
@@ -97,6 +97,6 @@ class TestRbbsDAO {
 		for(RbbsDTO rbbsdto : alist) {
 			System.out.println(rbbsdto.toString());
 		}
-	}
+	}*/
 
 }
