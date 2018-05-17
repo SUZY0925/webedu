@@ -207,7 +207,7 @@ public class RbbsDAOimpl implements RbbsDAO {
 			}
 			
 		} catch (SQLException e) {
-			DataBaseUtil.printSQLException(e, this.getClass().getName() + "BbsDTO replyView(int bNum)");
+			DataBaseUtil.printSQLException(e, this.getClass().getName() + "RbbsDTO replyView(int rNum)");
 		} finally {
 			DataBaseUtil.close(conn, pstmt, rs);
 		}

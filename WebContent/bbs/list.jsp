@@ -29,7 +29,7 @@ $(function() {
 </head>
 <body>
 	<div class="container">
-		<p class="h2" align="center">글목록</p>
+		<p class="h3" align="center">글목록</p>
 		<table class="table table-hover">
 			<thead class="thead-dark">
 				<tr>
@@ -58,7 +58,7 @@ $(function() {
 
 		<table width="100%">
 			<tr>
-				<td width="95%">
+				<td width="90%">
 					<ul id="pageing"
 						class="pagination pagination-sm justify-content-center">
 						<c:if test="${page.prev }">
@@ -104,7 +104,7 @@ $(function() {
 						<option <c:out value="${option == '내용' ? 'selected' : ''}" />>내용</option>
 					</select>
 				<input type="text" name="search" id="" class="form-control-sm" value="${search }"/>
-				<input type="button" class="btn-sm btn-secondary" id="searchBtn" value="검색" />
+				<input type="button" class="btn btn-outline-dark btn-sm" id="searchBtn" value="검색" />
 				</td>
 			</tr>
 		</table>

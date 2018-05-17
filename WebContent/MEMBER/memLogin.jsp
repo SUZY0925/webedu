@@ -15,7 +15,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet"
+	href="/webedu/public/bootstrap/dist/css/bootstrap.css">
 <title>로그인</title>
+
 <script src="/webedu/public/jquery/jquery-3.3.1.js"></script>
 <script>
 
@@ -64,16 +67,21 @@
 	});
 	
 </script>
+<style>
+input {
+		margin : 5px;
+	}
+</style>
 </head>
 <body>
 	<hr />
 	<h2>로그인</h2>
 	<hr />
 	<form action="/webedu/MEMBER/memLoginOK.jsp" method="post">
-	아이디: <input type="text" name="id"  id="id"/><br>
-	비밀번호 <input type="password" name="passwd"  id="passwd"/><br>
-	<input type="submit" value="로그인" />
-	<input type="button" value="회원가입" onClick="javascript:window.location='/webedu/MEMBER/memJoin.jsp' "/>	<!-- 함수로 안만들고 간단한건 이렇게도 처리 가능 -->
+	<label class="col-lg-2">아이디</label><input type="text" name="id"  id="id" class="form-control-sm"/><br>
+	<label class="col-lg-2">비밀번호</label><input type="password" name="passwd"  class="form-control-sm" id="passwd"/><br>
+	<input type="submit" value="로그인" class="btn btn-outline-primary btn-sm"/>
+	<input type="button" value="회원가입" onClick="javascript:window.location='/webedu/MEMBER/memJoin.jsp' " class="btn btn-outline-primary btn-sm"/>	<!-- 함수로 안만들고 간단한건 이렇게도 처리 가능 -->
 	</form>
 </body>
 </html>

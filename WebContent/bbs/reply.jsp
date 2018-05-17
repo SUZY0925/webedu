@@ -37,11 +37,12 @@
 	z-index: 10;
 }
  */
-#pageNumList>li {
+
+#pageNumList{
 	list-style: none;
 	display: inline;
 	padding: 5px;
-	margin-right: :-4px;
+	padding-left: :20px;
 }
 
 #modifyBtn {
@@ -106,14 +107,14 @@
 
 
 	$(function() {
-		// 댓글수정양식 숨기기
-		$("#modifyDiv").hide();
-
-		// 대댓글 양식 숨기기
-		$("#rereDiv").hide();
-
-		//replyList(); // 댓글목록 가져오기 호출
 		
+		//$("#modifyDiv").hide();// 댓글수정양식 숨기기
+		//$("#rereDiv").hide();// 대댓글 양식 숨기기
+		
+		// 댓글수정 대댓글 양식 숨기기
+		formhide();
+		
+		// 댓글목록 가져오기 호출
 		replyList(reReqPage);
 		
 		// 댓글 목록 처리
@@ -138,22 +139,20 @@
 			$(".title-diaLog").html(rNum);
 			$("#reContent").val(reContent);
 			$("#modifyDiv").show();
-
 		});
 
 		// 댓글 수정창 닫기
 		$("#exitBtn").click(function() {
-			$("#modifyDiv").hide();
-			$("#rereDiv").hide();
+			formhide();
 			$("#writeReply").show();
-			$('textarea').val("");
+			formclear();
 		});
 		
 		//대댓글 작성창 닫기
 		$("#reExitBtn").click(function() {
-			$("#modifyDiv").hide();
-			$("#rereDiv").hide();
+			formhide();
 			$("#writeReply").show();
+			formclear();
 		});
 
 
@@ -170,11 +169,9 @@
 				},
 				success : function(result) {
 					replyList(reReqPage);
-					$("#modifyDiv").hide();
-					$("#rereDiv").hide();
+					formhide();
 					$("#writeReply").show();
-					
-					$('textarea').val("");
+					formclear();
 				},
 				error : function(e) {
 					console.log("실패" + e);
@@ -196,10 +193,9 @@
 				},
 				success : function(result) {
 					replyList(reReqPage);
-					$("#modifyDiv").hide();
-					$("#rereDiv").hide();
+					formhide();
 					$("#writeReply").show();
-					$('textarea').val("");
+					formclear();
 				},
 				error : function(e) {
 					console.log("실패" + e);
@@ -235,19 +231,17 @@
 					rContent : replyContent
 				},
 				success : function(result) {
-					$("#modifyDiv").hide();
-					$("#rereDiv").hide();
+					formhide();
 					alert("댓글 작성 성공~");
 					replyList(reReqPage);
 					$("#writeReply").show();
-					$('textarea').val("");
-					
+					formclear();		
 				},
 				error : function(e) {
 					console.log("실패" + e);
 				}
 			});
-		});
+		}); 
 
 
 		// '댓글' 버튼을 클릭했을때
@@ -256,7 +250,9 @@
 			var rNum = li.attr("data-rNum");
 			
 			$("#writeReply").hide();
+			$("#modifyDiv").hide();
 			$("#rereDiv").show();
+			$(".title-diaLog").html(rNum);
 
 			// 댓글 작성하기를 클릭했을때
 			$("#rereplyBtn").click(function() {
@@ -285,10 +281,11 @@
 						rContent : reReplyContent
 					},
 					success : function(result) {
-						$("#modifyDiv").hide();
-						$("#rereDiv").hide();
+						formhide();
 						alert("댓글 작성 성공~");
 						replyList(reReqPage);
+						$("#writeReply").show();
+						formclear();
 					},
 					error : function(e) {
 						console.log("실패" + e);
@@ -297,6 +294,7 @@
 			});
 		});
 
+		// 좋아요 버튼 클릭
 		$("#reply").on("click", ".reList a #goodBtn", function() {
 			var li = $(this).parent().parent();
 			var rNum = li.attr("data-rNum");
@@ -311,8 +309,7 @@
 				},
 				success : function(result) {
 					replyList(reReqPage);
-					$("#modifyDiv").hide();
-					$("#rereDiv").hide();
+					formhide();
 					alert("좋아요");
 				},
 				error : function(e) {
@@ -321,6 +318,7 @@
 			});
 		});
 
+		// 싫어요 버튼 클릭
 		$("#reply").on("click", ".reList a #badBtn", function() {
 			var li = $(this).parent().parent();
 			var rNum = li.attr("data-rNum");
@@ -335,8 +333,7 @@
 				},
 				success : function(result) {
 					replyList(reReqPage);
-					$("#modifyDiv").hide();
-					$("#rereDiv").hide();
+					formhide();
 					alert("싫어요");
 					
 				},
@@ -346,12 +343,13 @@
 			});
 		});
 		
-		
+		// 페이지 선택했을 때
 		$("#pageNumList").on("click", "a ", function(evt) {
 			evt.preventDefault();
 			reReqPage = $(this).attr("href");
 			replyList(reReqPage);
-			console.log("ㅇㅇ"+reReqPage);
+			formhide();
+			formclear();
 		});
 	});
 
@@ -384,20 +382,19 @@
 						}
 					
 						str += rec.RCONTENT + " | "
-						+ rec.RGOOD + " | "
-						+ rec.RBAD
-						+ "<button id=\"modifyBtn\" style=\"float:right\">수정</button>"
-						+ "<button id=\"reReplyBtn\" style=\"float:right\">댓글</button>"
-						
+						+ "<button id=\"modifyBtn\" style=\"float:right\" class='btn btn-outline-primary btn-sm'>수정</button>"
+						+ "<button id=\"reReplyBtn\" style=\"float:right\" class='btn btn-outline-primary btn-sm'>댓글</button>"
 						+ "<a href='#'> "
-				        + " <span class='glyphicon glyphicon-thumbs-up' id='goodBtn'></span>"
+				        +  "<span class='glyphicon glyphicon-thumbs-up' id='goodBtn'></span>"
 				        + "</a>"
-				        + "<a href='#'> "
+				        + rec.RGOOD  
+				        + "  |  <a href='#'> "
 				        + " <span class='glyphicon glyphicon-thumbs-down' id='badBtn'></span>"
 				        + "</a>"
-				        
+				        + rec.RBAD
 						+ "</li>";
 				});
+		
 				$("#reply").html(str);
 			
 				//페이지 리스트 호출
@@ -411,7 +408,6 @@
 	
 	// 페이지 리스트
 	function showPageList(pageCriteria) {
-		console.log("ppppc"+pageCriteria);
 		var str = "";
 		
 		// 이전표시
@@ -439,6 +435,18 @@
 		$("#pageNumList").html(str);
 	}
 	
+	// 폼안에 있는 내용 삭제
+	function formclear() {
+		$('textarea').val("");
+		$('input').val("");
+	}
+	
+	// 수정, 리댓 폼 하이드
+	function formhide() {
+		$("#modifyDiv").hide();
+		$("#rereDiv").hide();
+	}
+	
 </script>
 
 </head>
@@ -449,30 +457,32 @@
 		<div id="writeReply">
 		<input type="text" name="" id="writer" class="form-control-m" placeholder="작성자" /><br>
 		<textarea name="rContent" id="replyContent" class="form-control-m" cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요." ></textarea>
-		<div class="textByte"></div>	<button id="replyBtn" style="float:right">댓글작성</button>
+		<div class="textByte"></div>	<button id="replyBtn" style="float:right" class='btn btn-outline-primary btn-sm'>댓글작성</button>
 		</div>
 		
 		<!-- 댓글의 수정버튼을 눌렀을때의 폼.. -->
 		<div id="modifyDiv">
 			<span class="title-diaLog" ></span>번 댓글<br>
-				<textarea id="reContent" cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요."></textarea>
+				<textarea id="reContent" cols="60" rows="3" class="form-control-m" placeholder="이곳에 댓글을 입력하세요."></textarea>
 				<div class="textByte"></div>
 			<div style="float:right">
-				<button id="reModifyBtn">수정</button>
-				<button id="reDelBtn">삭제</button>
-				<button id="exitBtn">닫기</button>
+				<button id="reModifyBtn" class='btn btn-outline-primary btn-sm'>수정</button>
+				<button id="reDelBtn" class='btn btn-outline-primary btn-sm'>삭제</button>
+				<button id="exitBtn" class='btn btn-outline-primary btn-sm'>닫기</button>
 			</div>
 		</div>
 		
 		<!-- 대댓글 작성할때의 폼.. -->
 		<div id="rereDiv">
+			<span class="title-diaLog" ></span>번 댓글에 댓글달기<br>
 			<input type="text" name="" id="reWriter" class="form-control-m"
 				placeholder="작성자" /><br>
 			<textarea name="rContent" id="reReplyContent" class="form-control-m" cols="60" rows="3"
 				placeholder="이곳에 댓글을 입력하세요."></textarea><div class="textByte"></div>
-			<br>
-			<button id="rereplyBtn">댓글작성</button>
-			<button id="reExitBtn">닫기</button>
+				<div style="float:right">
+			<button id="rereplyBtn" class='btn btn-outline-primary btn-sm'>댓글작성</button>
+			<button id="reExitBtn" class='btn btn-outline-primary btn-sm'>닫기</button>
+			</div>
 		</div>
 
 
@@ -482,6 +492,7 @@
 		<ul id="reply">
 
 		</ul>
+		
 		<ul id="pageNumList"
 			class="pagination pagination-m justify-content-center">
 
