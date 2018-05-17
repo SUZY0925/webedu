@@ -67,7 +67,6 @@ public class RbbsListCmd implements BCommand {
 		
 		response.getWriter().write(str.toString());
 		
-		
 	}
 
 }
