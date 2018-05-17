@@ -77,7 +77,7 @@
 	
 	// 글자수 제한 두기
 	$(document).ready(function() {
-	    	$('textarea').on('keyup focus', function() {
+	    	$('#allDiv textarea').on('keyup focus', function() {
 	    	var limitbyte = 197;
 	    	var str = $(this).val();
 	    	var strPiece = "";
@@ -366,6 +366,9 @@
 				 console.log(data.result);
 				 console.log(data.pageCriteria);
 				$.each(data.result, function(idx, rec) {
+					
+					
+					
 					if(rec.RINDENT==0 ) {
 						str+="<hr>";
 					}
@@ -393,6 +396,12 @@
 				        + "</a>"
 				        + rec.RBAD
 						+ "</li>";
+						
+						
+						
+						
+						
+						
 				});
 		
 				$("#reply").html(str);
@@ -437,14 +446,12 @@
 	
 	// 폼안에 있는 내용 삭제
 	function formclear() {
-		$('textarea').val("");
-		$('input').val("");
+		$('#allDiv textarea, #allDiv input').val("");
 	}
 	
 	// 수정, 리댓 폼 하이드
 	function formhide() {
-		$("#modifyDiv").hide();
-		$("#rereDiv").hide();
+		$("#modifyDiv, #rereDiv").hide();
 	}
 	
 </script>
