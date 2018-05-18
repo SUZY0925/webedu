@@ -243,8 +243,6 @@
 		$("#reply").on("click", ".reList #reReplyBtn", function() {
 			var li = $(this).parent();
 			var rNum = li.attr("data-rNum");
-			var rName = $("#rName").html();
-			alert(rName);                
 			
 			$("#writeReply").hide();
 			$("#modifyDiv").hide();
@@ -292,8 +290,8 @@
 		});
 
 		// 좋아요 버튼 클릭
-		$("#reply").on("click", ".reList a #goodBtn", function() {
-			var li = $(this).parent().parent();
+		$("#reply").on("click", ".reList #goodBtn", function() {
+			var li = $(this).parent();
 			var rNum = li.attr("data-rNum");
 
 			$.ajax({
@@ -316,8 +314,8 @@
 		});
 
 		// 싫어요 버튼 클릭
-		$("#reply").on("click", ".reList a #badBtn", function() {
-			var li = $(this).parent().parent();
+		$("#reply").on("click", ".reList #badBtn", function() {
+			var li = $(this).parent();
 			var rNum = li.attr("data-rNum");
 
 			$.ajax({
@@ -367,28 +365,26 @@
 						str+="<hr>";
 					}
 					
-					//str += "<li data-rNum='" + rec.RNUM + "' class = 'reList' style=\"margin-left :" + rec.RINDENT*20 + "px;\">";
 					str += "<li data-rNum='" + rec.RNUM + "' class = 'reList'>";
 					if(rec.RINDENT>0) {
 						str+= "<i class=\"material-icons\" style = \"font-size:15px;\">" + "&#xe5da;"+ "</i>";
 					}
-					str += "<b id='rName'>" + rec.RNAME + "</b>"+ " | " + rec.RCDATE +"<br>";
+					str += "<b>" + rec.RNAME + "</b>"+ " | " + rec.RCDATE +"<br>";
 					
-					//str += "<i style=\"margin-left :15px;\">"+"</i>" + rec.RCONTENT + " | "
 					if(rec.RINDENT >1 ) {
 					str+= "<b>@" + rec.findWriter + " </b>";
 					}	
 						str += rec.RCONTENT + " | "
 						+ "<button id=\"modifyBtn\" style=\"float:right\" class='btn btn-outline-primary btn-sm'>수정</button>"
 						+ "<button id=\"reReplyBtn\" style=\"float:right\" class='btn btn-outline-primary btn-sm'>댓글</button>"
-						+ "<a href='#'> "
-				        +  "<span class='glyphicon glyphicon-thumbs-up' id='goodBtn'></span>"
-				        + "</a>"
-				        + rec.RGOOD  
-				        + "  |  <a href='#'> "
-				        + " <span class='glyphicon glyphicon-thumbs-down' id='badBtn'></span>"
-				        + "</a>"
-				        + rec.RBAD
+						
+				        + "<button id='goodBtn' class='btn btn-outline-primary btn-sm'>"
+				        + "<i class='glyphicon glyphicon-thumbs-up'></i>"
+				        + rec.RGOOD + "</button>"
+				        + "<button id='badBtn' class='btn btn-outline-primary btn-sm'>"
+				        + "<i class='glyphicon glyphicon-thumbs-down'></i>"
+				        + rec.RBAD + "</button>" 
+				        
 						+ "</li>";
 				});
 		
