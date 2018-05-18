@@ -43,6 +43,8 @@ public class RbbsListCmd implements BCommand {
 			str.append("\"RCDATE\":\"" + rbbsdto.getRcdate() + "\",");
 			str.append("\"RCONTENT\":\"" + rbbsdto.getRcontent() + "\",");
 			str.append("\"RNAME\":\"" + rbbsdto.getRname() + "\",");
+			str.append("\"findWriter\":\"" + rbbsdao.replyWriterFind(rbbsdto.getBnum(), rbbsdto.getRgroup(), rbbsdto.getRindent()) + "\",");
+			
 			str.append("\"RINDENT\":\"" + rbbsdto.getRindent() + "\",");
 			str.append("\"RGOOD\":\"" + rbbsdto.getRgood() + "\",");
 

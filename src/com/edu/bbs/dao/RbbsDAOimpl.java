@@ -313,7 +313,35 @@ public class RbbsDAOimpl implements RbbsDAO {
       }
       return count; // 총 레코드 수 리턴
 	}
-
+	@Override
+	public String replyWriterFind(int bNum, int rGroup, int rIndent) {
+		String writer="";
+		/*select t2.* from (select row_number() over (ORDER BY rgroup desc, rstep asc) as num,
+				t1.* FROM replybbs t1 where bnum = ?) t2 where rgroup = ? and rindent = ?-1;*/
+		StringBuffer sql = new StringBuffer();
+		sql.append("select t2.rname from (select row_number() over (ORDER BY rgroup desc, rstep asc) as num,")
+		.append("t1.* FROM replybbs t1 where bnum = ?) t2 where rgroup = ? and rindent = ?-1");
+		
+		try {
+         conn = DataBaseUtil.getConnection();
+         pstmt = conn.prepareStatement(sql.toString());
+         pstmt.setInt(1, bNum);
+         pstmt.setInt(2, rGroup);
+         pstmt.setInt(3, rIndent);
+         
+         rs = pstmt.executeQuery();
+         
+         if(rs.next()){
+            writer = rs.getString(1);
+         }
+      } catch (SQLException e) {
+         DataBaseUtil.printSQLException(e, this.getClass().getName() + " int replyTotalRec()");
+      } finally {
+         DataBaseUtil.close(conn, pstmt, rs);
+      }
+		return writer;
+	}
+	
 	@Override
 	public ArrayList<RbbsDTO> searchList(String option, String search, int startRow, int endRow) {
 		// TODO Auto-generated method stub

@@ -9,14 +9,17 @@
 	href="/webedu/public/bootstrap/dist/css/bootstrap.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script src="/webedu/public/jquery/jquery-3.3.1.js"></script>
 <script src="/webedu/public/bootstrap/dist/js/bootstrap.js"></script>
 <title>댓글</title>
 <style>
 .textByte {
-	display:inline;
+	display: inline;
 }
- #modifyDiv {
+
+#modifyDiv {
 	/* width: 300px;
 	height: 200px;
 	background-color: gray;
@@ -24,8 +27,8 @@
 	left: 37%;
 	padding: 20px;
 	z-index: 10; */
-} 
-
+	
+}
 
 /* #rereDiv {
 	width: 300px;
@@ -37,8 +40,7 @@
 	z-index: 10;
 }
  */
-
-#pageNumList{
+#pageNumList {
 	list-style: none;
 	display: inline;
 	padding: 5px;
@@ -59,15 +61,15 @@
 }
 
 #replyContent {
-	margin-top:5px;
+	margin-top: 5px;
 }
 
 #allDiv {
-  width: 100%;
-  padding-right: 50px;
-  padding-left: 50px;
-  margin-right: auto;
-  margin-left: auto;
+	width: 100%;
+	padding-right: 50px;
+	padding-left: 50px;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 </style>
@@ -121,20 +123,13 @@
 		$("#reply").on("click", ".reList #modifyBtn", function() {
 			$("#rereDiv").hide();
 			$("#writeReply").hide();
-			var li = $(this).parent();
 			
+			var li = $(this).parent();
 			var rNum = li.attr("data-rNum");
 			
 			// 댓글내용 분리 작업.. 
 			var strArray = li.text().split("|");
 			var reContent = strArray[1].substring(11); // 날짜랑 분리,,
-			
-			// 대댓일 경우
-			if(reContent.indexOf("└") > 0) 
-			{
-				var arr = reContent.split("└ ");
-				reContent = arr[1];
-			}
 
 			$(".title-diaLog").html(rNum);
 			$("#reContent").val(reContent);
@@ -248,6 +243,8 @@
 		$("#reply").on("click", ".reList #reReplyBtn", function() {
 			var li = $(this).parent();
 			var rNum = li.attr("data-rNum");
+			var rName = $("#rName").html();
+			alert(rName);                
 			
 			$("#writeReply").hide();
 			$("#modifyDiv").hide();
@@ -366,24 +363,21 @@
 				 console.log(data.result);
 				 console.log(data.pageCriteria);
 				$.each(data.result, function(idx, rec) {
-					
-					
-					
 					if(rec.RINDENT==0 ) {
 						str+="<hr>";
 					}
-					str += "<li data-rNum='" + rec.RNUM + "' class = 'reList'>";
-						for(var i = 0; rec.RINDENT>i; i++){
-							str+= "&nbsp;&nbsp;&nbsp;&nbsp;";
-						}
-						str += rec.RNAME + " | " + rec.RCDATE +"<br>";
-						for(var i = 0; rec.RINDENT>i; i++){
-							str+= "&nbsp;&nbsp;&nbsp;";
-						}
-						if(rec.RINDENT>0) {
-							str+= "└ ";
-						}
 					
+					//str += "<li data-rNum='" + rec.RNUM + "' class = 'reList' style=\"margin-left :" + rec.RINDENT*20 + "px;\">";
+					str += "<li data-rNum='" + rec.RNUM + "' class = 'reList'>";
+					if(rec.RINDENT>0) {
+						str+= "<i class=\"material-icons\" style = \"font-size:15px;\">" + "&#xe5da;"+ "</i>";
+					}
+					str += "<b id='rName'>" + rec.RNAME + "</b>"+ " | " + rec.RCDATE +"<br>";
+					
+					//str += "<i style=\"margin-left :15px;\">"+"</i>" + rec.RCONTENT + " | "
+					if(rec.RINDENT >1 ) {
+					str+= "<b>@" + rec.findWriter + " </b>";
+					}	
 						str += rec.RCONTENT + " | "
 						+ "<button id=\"modifyBtn\" style=\"float:right\" class='btn btn-outline-primary btn-sm'>수정</button>"
 						+ "<button id=\"reReplyBtn\" style=\"float:right\" class='btn btn-outline-primary btn-sm'>댓글</button>"
@@ -396,12 +390,6 @@
 				        + "</a>"
 				        + rec.RBAD
 						+ "</li>";
-						
-						
-						
-						
-						
-						
 				});
 		
 				$("#reply").html(str);
@@ -459,36 +447,42 @@
 </head>
 <body>
 	<div class="container" id="allDiv">
-	
+
 		<!-- 댓글 작성하기 폼 -->
 		<div id="writeReply">
-		<input type="text" name="" id="writer" class="form-control-m" placeholder="작성자" /><br>
-		<textarea name="rContent" id="replyContent" class="form-control-m" cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요." ></textarea>
-		<div class="textByte"></div>	<button id="replyBtn" style="float:right" class='btn btn-outline-primary btn-sm'>댓글작성</button>
+			<input type="text" name="" id="writer" class="form-control-m"
+				placeholder="작성자" /><br>
+			<textarea name="rContent" id="replyContent" class="form-control-m"
+				cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요."></textarea>
+			<div class="textByte"></div>
+			<button id="replyBtn" style="float: right"
+				class='btn btn-outline-primary btn-sm'>댓글작성</button>
 		</div>
-		
+
 		<!-- 댓글의 수정버튼을 눌렀을때의 폼.. -->
 		<div id="modifyDiv">
-			<span class="title-diaLog" ></span>번 댓글<br>
-				<textarea id="reContent" cols="60" rows="3" class="form-control-m" placeholder="이곳에 댓글을 입력하세요."></textarea>
-				<div class="textByte"></div>
-			<div style="float:right">
+			<span class="title-diaLog"></span>번 댓글<br>
+			<textarea id="reContent" cols="60" rows="3" class="form-control-m"
+				placeholder="이곳에 댓글을 입력하세요."></textarea>
+			<div class="textByte"></div>
+			<div style="float: right">
 				<button id="reModifyBtn" class='btn btn-outline-primary btn-sm'>수정</button>
 				<button id="reDelBtn" class='btn btn-outline-primary btn-sm'>삭제</button>
 				<button id="exitBtn" class='btn btn-outline-primary btn-sm'>닫기</button>
 			</div>
 		</div>
-		
+
 		<!-- 대댓글 작성할때의 폼.. -->
 		<div id="rereDiv">
-			<span class="title-diaLog" ></span>번 댓글에 댓글달기<br>
-			<input type="text" name="" id="reWriter" class="form-control-m"
+			<span class="title-diaLog"></span>번 댓글에 댓글달기<br> <input
+				type="text" name="" id="reWriter" class="form-control-m"
 				placeholder="작성자" /><br>
-			<textarea name="rContent" id="reReplyContent" class="form-control-m" cols="60" rows="3"
-				placeholder="이곳에 댓글을 입력하세요."></textarea><div class="textByte"></div>
-				<div style="float:right">
-			<button id="rereplyBtn" class='btn btn-outline-primary btn-sm'>댓글작성</button>
-			<button id="reExitBtn" class='btn btn-outline-primary btn-sm'>닫기</button>
+			<textarea name="rContent" id="reReplyContent" class="form-control-m"
+				cols="60" rows="3" placeholder="이곳에 댓글을 입력하세요."></textarea>
+			<div class="textByte"></div>
+			<div style="float: right">
+				<button id="rereplyBtn" class='btn btn-outline-primary btn-sm'>댓글작성</button>
+				<button id="reExitBtn" class='btn btn-outline-primary btn-sm'>닫기</button>
 			</div>
 		</div>
 
@@ -499,7 +493,7 @@
 		<ul id="reply">
 
 		</ul>
-		
+
 		<ul id="pageNumList"
 			class="pagination pagination-m justify-content-center">
 

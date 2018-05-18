@@ -47,4 +47,6 @@ public interface RbbsDAO {
 
 	int replyTotalRec(int bNum);
 
+	String replyWriterFind(int bNum, int rGroup, int rIndent);
+
 }
